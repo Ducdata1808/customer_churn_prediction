@@ -334,10 +334,7 @@
   color: rgba(255, 255, 255, 0.3) !important;
 }
 
-/* Check icon */
-.dark main .text-brand-500 {
-  color: #CC5833 !important;
-}
+/* Check icon — use native brand-500 purple */
 
 /* Status badge text override */
 .dark main .text-sm.font-bold {
@@ -359,11 +356,4 @@
   color: rgba(255, 255, 255, 0.55) !important;
 }
 
-/* MiniCalendar */
-.dark main .bg-brand-500 {
-  background-color: #CC5833 !important;
-}
-
-.dark main .text-brand-500 {
-  color: #CC5833 !important;
-}
+/* brand-500 uses native Horizon UI purple (#422AFB) */

@@ -4,7 +4,7 @@ import Card from "components/card";
 import Widget from "components/widget/Widget";
 import { MdTrendingUp, MdTimer, MdCompareArrows, MdAnalytics, MdHistory, MdPlayArrow } from "react-icons/md";
 
-const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:8002";
+const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:8000";
 
 const ModelComparison = () => {
   // UI & Training States
