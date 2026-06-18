@@ -150,7 +150,7 @@ const ChurnPrediction = () => {
       };
     return {
       label: "Rủi ro cao",
-      color: "#422AFB",
+      color: "#EE5D50",
       bg: "bg-red-50 dark:bg-red-950/20",
       border: "border-red-200 dark:border-red-900/40",
       text: "text-red-600 dark:text-red-400",
@@ -183,7 +183,15 @@ const ChurnPrediction = () => {
     },
     grid: { padding: { top: -10, bottom: -10 } },
     fill: {
-      colors: [({ value }) => (value < 40 ? "#05cd99" : value < 70 ? "#f97316" : "#422AFB")],
+      colors: [
+        result
+          ? result.churn_probability * 100 < 40
+            ? "#05cd99"
+            : result.churn_probability * 100 < 70
+            ? "#f97316"
+            : "#EE5D50"
+          : "#422AFB",
+      ],
     },
     labels: ["Xác suất"],
   };
