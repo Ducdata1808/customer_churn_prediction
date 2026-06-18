@@ -17,7 +17,10 @@ import {
   MdBarChart,
   MdPerson,
   MdLock,
+  MdPieChart,
 } from "react-icons/md";
+
+import EDADashboard from "views/admin/eda";
 
 const routes = [
   {
@@ -26,6 +29,13 @@ const routes = [
     path: "default",
     icon: <MdHome className="h-6 w-6" />,
     component: <MainDashboard />,
+  },
+  {
+    name: "EDA Dashboard",
+    layout: "/admin",
+    path: "eda",
+    icon: <MdPieChart className="h-6 w-6" />,
+    component: <EDADashboard />,
   },
   {
     name: "NFT Marketplace",
