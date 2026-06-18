@@ -1,4 +1,4 @@
-# Customer Churn Prediction - ML Pipeline
+# Customer Churn Prediction - ML Pipeline & Web Dashboard
 
 ## 🎯 Tổng quan dự án
 
@@ -21,12 +21,20 @@ customer_churn_prediction/
 │   ├── logging.yaml                 # Cấu hình logging
 │   └── params.yaml                  # Hyperparameters cho model training
 │
-├── src/                             # Source code chính
+├── src/                             # Source code chính ML Pipeline
 │   ├── components/                  # Các component xử lý logic
 │   ├── config/                      # Configuration management
 │   ├── entity/                      # Data entities (dataclasses)
 │   ├── pipeline/                    # Pipeline wrappers cho từng stage
 │   └── utils/                       # Utility functions
+│
+├── backend/                         # FastAPI Backend cung cấp API
+│   ├── app/                         # Source code ứng dụng FastAPI
+│   └── run_backend.py               # Chạy server FastAPI (uvicorn)
+│
+├── frontend/                        # React Frontend Dashboard
+│   ├── src/views/admin/eda/         # Giao diện trực quan hoá dữ liệu (EDA)
+│   └── package.json                 # Cấu hình Node.js & thư viện React
 │
 ├── data/                            # Dữ liệu thô (zip files)
 ├── artifacts/                       # Outputs từ các stages
@@ -454,5 +462,40 @@ model_trainer:
 
 model_evaluation:
   mlflow_uri: "http://your-mlflow-server:5000"
+```
+
+---
+
+## 🌐 Web Dashboard (Frontend & Backend API)
+
+Ngoài phần ML Pipeline phục vụ việc huấn luyện, dự án còn tích hợp hệ thống Web Dashboard tương tác để trực quan hoá kết quả Phân tích Khám phá Dữ liệu (EDA).
+
+### Backend (FastAPI)
+- Cung cấp dữ liệu đã qua tính toán thông qua REST API (`/api/v1/eda/...`).
+- Xử lý các phép toán thống kê mô tả, phân phối đơn biến, tính toán Boxplot, và ma trận tương quan trực tiếp từ tập dữ liệu học (train dataset).
+
+### Frontend (React + Tailwind CSS + Horizon UI)
+Giao diện phân tích trực quan hoàn chỉnh nằm ở mục **EDA Dashboard** (`/admin/eda`), bao gồm các chức năng nổi bật:
+1. **Overview Cards (Thẻ KPI):** Trình bày nhanh tổng quan bộ dữ liệu (Số dòng, cột, dữ liệu lỗi, trùng lặp).
+2. **Descriptive Statistics (Thống kê Mô tả):** Bảng hiển thị thông số chi tiết (Mean, Min, Max, Q1, Q3, Skew) cho các biến định lượng.
+3. **Univariate Analysis (Đơn biến):** Biểu đồ tương tác tự động chọn Histogram (Cột) cho biến định lượng và Donut (Tròn) cho biến định tính bằng thư viện `react-apexcharts`.
+4. **Bivariate Analysis (Đa biến):** Trình diễn Heatmap biểu diễn tương quan giữa các đặc trưng và cung cấp biểu đồ so sánh chi tiết giữa một tính năng tùy chọn với mục tiêu Churn.
+5. **AI Insights:** Mỗi biểu đồ đều kèm theo một dòng Nhận xét tự động, giúp giải thích nhanh ý nghĩa số liệu.
+
+### Cách chạy Web Dashboard
+
+1. Khởi động Backend API (Cổng 8000):
+```bash
+# Đảm bảo bạn đã activate virtual environment
+cd backend
+python run_backend.py
+```
+
+2. Khởi động Frontend React (Cổng 3000):
+```bash
+# Mở một terminal mới
+cd frontend
+npm install   # Cài đặt thư viện nếu chạy lần đầu
+npm start     # Mở giao diện trên trình duyệt
 ```
 
