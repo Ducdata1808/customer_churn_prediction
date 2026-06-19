@@ -88,8 +88,33 @@ const DescriptiveStats = () => {
 
       <div className="mt-4 rounded-[20px] bg-indigo-50 p-4 dark:bg-navy-700">
         <p className="text-sm text-navy-700 dark:text-white">
-          💡 <b>Nhận xét (Insight):</b> {insight}
+          💡 <b>Nhận xét:</b> {insight}
         </p>
+      </div>
+
+      {/* Nhận xét chi tiết từ Mục 4.1 của notebook */}
+      <div className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div className="rounded-xl bg-blue-50 border border-blue-200 p-3 dark:bg-blue-900/20 dark:border-blue-700">
+          <p className="text-xs font-bold text-blue-700 dark:text-blue-300 mb-1">⏳ tenure</p>
+          <p className="text-xs text-gray-600 dark:text-gray-300">
+            Phân phối <b>Bimodal</b> — hai đỉnh ở biên: khách hàng mới (dưới 6 tháng) và lâu năm
+            (trên 60 tháng). Nên rời rạc hóa bằng <b>Ordinal Encoding</b> theo nhóm vòng đời.
+          </p>
+        </div>
+        <div className="rounded-xl bg-orange-50 border border-orange-200 p-3 dark:bg-orange-900/20 dark:border-orange-700">
+          <p className="text-xs font-bold text-orange-700 dark:text-orange-300 mb-1">💰 MonthlyCharges</p>
+          <p className="text-xs text-gray-600 dark:text-gray-300">
+            Đỉnh cao ở mức phí <b>thấp nhất (~20$)</b>, phần còn lại trải dài 40$–115$. Cần áp dụng{" "}
+            <b>Min-Max Scaler</b> cho các mô hình nhạy cảm với khoảng cách.
+          </p>
+        </div>
+        <div className="rounded-xl bg-purple-50 border border-purple-200 p-3 dark:bg-purple-900/20 dark:border-purple-700">
+          <p className="text-xs font-bold text-purple-700 dark:text-purple-300 mb-1">📊 TotalCharges</p>
+          <p className="text-xs text-gray-600 dark:text-gray-300">
+            Lệch phải mạnh <b>Right-skewed</b>. Đa số tập trung 0-2,000$. Cân nhắc{" "}
+            <b>Log Transformation</b> hoặc Binning cho mô hình tuyến tính.
+          </p>
+        </div>
       </div>
     </div>
   );

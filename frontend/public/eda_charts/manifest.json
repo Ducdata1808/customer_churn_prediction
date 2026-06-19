@@ -1,0 +1,114 @@
+[
+  {
+    "id": 0,
+    "file": "chart_00.png",
+    "section": "4.1 – Phân phối đơn biến (Biến định lượng)",
+    "title": "Phân bố khách hàng theo Thời gian gắn bó, Cước phí hàng tháng & Tổng cước phí",
+    "insight": "Phân bố thời gian gắn bó (tenure) có dạng Bimodal với hai đỉnh ở biên: khách hàng mới (dưới 6 tháng) và lâu năm (trên 60 tháng). Cước phí hàng tháng có đỉnh cao ở mức thấp nhất. Tổng cước phí lệch phải mạnh (Right-skewed) với đa số tập trung ở 0–2,000$."
+  },
+  {
+    "id": 1,
+    "file": "chart_01.png",
+    "section": "4.2 – Phân phối đơn biến (Biến định tính)",
+    "title": "Phân bố 16 đặc trưng định tính",
+    "insight": "Phân bố các biến định tính cho thấy cấu trúc phân lớp rõ ràng. Tỷ lệ PhoneService cao (90%+). Hầu hết dịch vụ bổ sung (OnlineSecurity, TechSupport...) có xu hướng 'No' chiếm đa số, phản ánh cơ hội upsell còn lớn."
+  },
+  {
+    "id": 2,
+    "file": "chart_02.png",
+    "section": "4.3 – Phân bố Biến mục tiêu (Churn)",
+    "title": "Tỷ lệ Churn – Phân bố biến mục tiêu",
+    "insight": "Tập dữ liệu thể hiện sự mất cân bằng mẫu ở mức vừa phải với tỷ lệ xấp xỉ 3.5:1, nhóm khách hàng tiếp tục sử dụng chiếm 77.5%. Nhóm rời bỏ — mục tiêu cốt lõi cần dự đoán — chiếm 22.5%, đặt ra yêu cầu áp dụng SMOTE hoặc class_weight khi huấn luyện."
+  },
+  {
+    "id": 3,
+    "file": "chart_03.png",
+    "section": "5.1 – Phân tích Song biến (Biến định lượng vs Churn)",
+    "title": "Phân phối Thời gian gắn bó, Cước phí & Tổng cước phí theo nhóm Churn",
+    "insight": "Khách hàng rời bỏ có thời gian gắn bó trung bình thấp hơn hẳn (bimodal với đỉnh ở 1-5 tháng). Nhóm rời bỏ tập trung ở mức cước cao (70-100$). Vòng đời càng dài, hệ số tương quan nghịch phát huy sức mạnh kéo tỷ lệ Churn xuống đáy."
+  },
+  {
+    "id": 4,
+    "file": "chart_04.png",
+    "section": "5.2 – Phân tích Song biến (Biến định tính vs Churn)",
+    "title": "Tỷ lệ Churn theo từng nhóm biến định tính",
+    "insight": "Hợp đồng Month-to-month mang rủi ro hủy dịch vụ 42.05%. Electronic check → 48.91% churn. Fiber optic + thiếu dịch vụ hỗ trợ → rủi ro vọt lên 52.7%. Gender là đặc trưng Nhiễu hệ thống (Zero-Signal) — không có giá trị dự báo."
+  },
+  {
+    "id": 5,
+    "file": "chart_05.png",
+    "section": "5.2 – Phân tích Song biến (Biến định tính vs Churn)",
+    "title": "Risk Gap – Chênh lệch tỷ lệ Churn giữa các nhóm",
+    "insight": "Loại hợp đồng Contract với sự chênh lệch Risk Gap đạt 41.06%. Khách hàng ký hợp đồng ngắn hạn Month-to-month có tỷ lệ rời bỏ 42.05%, trong khi cam kết 2 năm gần như triệt tiêu hoàn toàn rủi ro này (chỉ 1%). PaymentMethod đứng thứ 2 với Risk Gap 41.97%."
+  },
+  {
+    "id": 6,
+    "file": "chart_06.png",
+    "section": "5.2 – Phân tích Song biến (Dịch vụ bổ trợ vs Churn)",
+    "title": "Độ chênh lệch Churn (Risk Gap) của các Dịch vụ bổ trợ",
+    "insight": "Dịch vụ Bảo vệ & Hỗ trợ (Security & Support) mang lại hiệu quả tích cực nhất — OnlineSecurity và TechSupport dẫn đầu khả năng kéo giảm tỷ lệ rời bỏ xuống mức một con số. Ngược lại, StreamingTV và StreamingMovies gần như không mang lại hiệu quả giữ chân (chênh lệch chỉ 1.3–1.6%)."
+  },
+  {
+    "id": 7,
+    "file": "chart_07.png",
+    "section": "5.3.1 – Feature Engineering: Phân khúc hóa",
+    "title": "Ma trận Rủi ro – Loyalty Tier × Charge Segment (Heatmap)",
+    "insight": "Vùng rủi ro cộng hưởng lớn: Onboarding (0-6 tháng) + Premium (trên 70$) → tỷ lệ rời bỏ 77.4%. Ở chiều ngược lại, Budget (0-35$) duy trì rủi ro cực thấp từ 16.5% xuống 0.4% ở nhóm Loyal. Đặc trưng phái sinh loyalty_tier và charge_segment phân loại hành vi phi tuyến tính xuất sắc."
+  },
+  {
+    "id": 8,
+    "file": "chart_08.png",
+    "section": "5.3.2 – Feature Engineering: Tỷ số Tài chính",
+    "title": "Phân phối Log Áp lực Chi phí, Bill Shock Ratio & Đơn giá Dịch vụ theo Churn",
+    "insight": "Log Tỷ lệ Áp lực Chi phí: phân phối hai nhóm tách rời hoàn hảo — nhóm rời bỏ tạo dải phân phối bẹt kéo phải. charge_to_tenure_ratio_log và average_cost_per_service có Information Density cực cao. bill_shock_ratio không mang giá trị thông tin hữu ích → cần loại bỏ."
+  },
+  {
+    "id": 9,
+    "file": "chart_09.png",
+    "section": "5.3.3 – Feature Engineering: Hệ thống điểm số",
+    "title": "Phân hóa Rủi ro theo Điểm Khiên Bảo vệ & Điểm Giải trí",
+    "insight": "Security Score = 0 (Internet nhưng không dịch vụ bổ trợ) → rủi ro 52.7%. Tích lũy 4 dịch vụ bảo vệ → giảm cấp số nhân xuống 1.4%. Streaming Score: ngay cả khi đủ 2 dịch vụ giải trí, rủi ro vẫn ~27.2% — không tạo được sức giữ chân như mong đợi."
+  },
+  {
+    "id": 10,
+    "file": "chart_10.png",
+    "section": "5.3.3 – Feature Engineering: Cờ rủi ro hành vi",
+    "title": "Phân tích 3 Cờ Rủi ro Hành vi (Behavioral Risk Flags)",
+    "insight": "Cờ zero_supportive_service: 52.7% churn. Cờ manual_payment: 34.0% churn vs 7.3% thanh toán tự động. composite_risk_profile (Fiber optic + Month-to-month): 55% churn — cứ 20 người có 11 người hủy hợp đồng. Đây là thành quả ấn tượng nhất của Feature Engineering."
+  },
+  {
+    "id": 11,
+    "file": "chart_11.png",
+    "section": "5.3.4 – Feature Engineering: Phân khúc Nhân khẩu học",
+    "title": "Tỷ lệ Churn & Quy mô khách hàng theo Demographic Profile",
+    "insight": "Rủi ro rời bỏ tỷ lệ nghịch với quy mô khách hàng. Nhóm cao tuổi + sống độc lập: rủi ro đỉnh 60.3% do rào cản công nghệ. demographic_profile tạo Risk Spread đột phá 49.7% — biến nén này triệt tiêu rủi ro đa cộng tuyến từ 3 biến nhân khẩu học gốc."
+  },
+  {
+    "id": 12,
+    "file": "chart_12.png",
+    "section": "5.4.1 – Tương quan Toàn cục (Pearson)",
+    "title": "Ma trận Tương quan Pearson – Biến định lượng & Thứ bậc",
+    "insight": "Log Tỷ lệ Áp lực Chi phí đạt r = 0.53 với Churn, vượt trội so với cước phí gốc (r = 0.27). Điều này xác nhận khách hàng không rời đi vì cước cao mà vì áp lực tài chính quá lớn so với thời gian gắn bó. TotalCharges có độ trùng lặp thông tin cao với tenure."
+  },
+  {
+    "id": 13,
+    "file": "chart_13.png",
+    "section": "5.4.1 – Tương quan Toàn cục (Spearman Ordinal)",
+    "title": "Ma trận Tương quan Spearman – Biến thứ bậc (Ordinal)",
+    "insight": "Đặc trưng Mức độ gắn bó (loyalty_tier) đạt ρ = -0.43, nhỉnh hơn đặc trưng gốc tenure (r = -0.42). Phân khúc Cước phí vượt trội với hệ số tăng từ r = 0.27 lên ρ = 0.33. Binning không chỉ bảo toàn thông tin mà còn xử lí nhiễu loạn cục bộ của dữ liệu liên tục."
+  },
+  {
+    "id": 14,
+    "file": "chart_14.png",
+    "section": "5.4.2 – Tương quan Toàn cục (Cramér's V – Biến định tính)",
+    "title": "Ma trận Cramér's V – Biến định tính & Điểm số",
+    "insight": "Siêu cờ Tổ hợp rủi ro đạt V = 0.54 — năng lực vượt trội nhất. Cờ Thanh toán thủ công V = 0.32. Các biến nhân khẩu học đơn lẻ (gender, SeniorCitizen, Partner, Dependents) nên được thay bằng demographic_profile để tránh bẫy đa cộng tuyến."
+  },
+  {
+    "id": 15,
+    "file": "chart_15.png",
+    "section": "5.4.3 – Bảng Xếp hạng Sức mạnh Đặc trưng",
+    "title": "Feature Superiority Ranking – Xếp hạng Sức mạnh Đặc trưng",
+    "insight": "Bảng xếp hạng trực quan hóa sự áp đảo của nhóm đặc trưng phái sinh Engineered Features so với dữ liệu nguyên bản. Top 3: composite_risk_profile (0.54), charge_to_tenure_ratio_log (0.53), security_score (0.49). 9 đặc trưng tối ưu được chọn cho Modeling Pipeline."
+  }
+]

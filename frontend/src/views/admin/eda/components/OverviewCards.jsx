@@ -46,7 +46,18 @@ const OverviewCards = ({ overviewData }) => {
 
       <div className="mt-3 rounded-[20px] bg-indigo-50 p-4 dark:bg-navy-800">
         <p className="text-sm text-navy-700 dark:text-white">
-          💡 <b>Nhận xét (Insight):</b> {data.insight}
+          💡 <b>Nhận xét:</b> {data.insight}
+        </p>
+      </div>
+
+      {/* Nhận xét kiểm định dữ liệu – Mục 3 từ notebook */}
+      <div className="mt-3 rounded-[20px] bg-green-50 border border-green-200 p-4 dark:bg-green-900/20 dark:border-green-700">
+        <p className="text-sm text-green-800 dark:text-green-300">
+          ✅ <b>Kết quả Kiểm định Dữ liệu (Mục 3):</b> Kết quả kiểm định chéo đồng loạt bằng
+          0 chứng minh tập dữ liệu thô cực kỳ nhất quán — không tồn tại trường hợp lỗi logic
+          toán học (cước phí âm, thời gian gắn bó lẻ) hay mâu thuẫn hệ sinh thái dịch vụ (không
+          đăng ký Internet nhưng vẫn có OnlineSecurity). Điều này đảm bảo tính toàn vẹn thông tin
+          gốc, giúp quá trình <b>Feature Engineering</b> diễn ra an toàn.
         </p>
       </div>
     </div>

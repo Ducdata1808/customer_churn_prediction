@@ -159,7 +159,6 @@ const BivariateAnalysis = ({ overviewData }) => {
         </div>
         <div className="w-full flex-grow flex items-center justify-center min-h-[350px]">
           {loadingBi && <span className="text-gray-500 animate-pulse">Đang tải...</span>}
-          {/* Fix #4 */}
           {biError && !loadingBi && (
             <div className="rounded-lg bg-red-50 border border-red-200 p-4 text-red-700 text-sm">⚠️ {biError}</div>
           )}
@@ -171,8 +170,83 @@ const BivariateAnalysis = ({ overviewData }) => {
           </div>
         )}
       </div>
+
+      {/* ── Nhận xét tổng hợp Mục 5.2 từ notebook ────────────────────────── */}
+      <div className="xl:col-span-2 rounded-[20px] bg-white p-6 shadow-3xl dark:!bg-navy-800 dark:text-white">
+        <h3 className="text-base font-bold mb-3">
+          🔑 Điểm chính – Phân tích Biến định tính vs Churn
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+          {[
+            {
+              icon: "📋",
+              title: "Contract (Hợp đồng)",
+              churn: "42.05%",
+              bg: "bg-red-50 border-red-200 dark:bg-red-900/20 dark:border-red-700",
+              text: "text-red-700 dark:text-red-300",
+              note: "Month-to-month → 42% churn. Cam kết 2 năm → chỉ 1%. Chênh lệch Risk Gap đạt 41.06%.",
+            },
+            {
+              icon: "💳",
+              title: "PaymentMethod",
+              churn: "48.91%",
+              bg: "bg-orange-50 border-orange-200 dark:bg-orange-900/20 dark:border-orange-700",
+              text: "text-orange-700 dark:text-orange-300",
+              note: "Electronic check → 48.91%. Credit card tự động → 6.93%. Mức phân hóa rủi ro 41.97%.",
+            },
+            {
+              icon: "🌐",
+              title: "InternetService",
+              churn: "~41.9%",
+              bg: "bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-700",
+              text: "text-yellow-700 dark:text-yellow-300",
+              note: "Fiber optic + thiếu dịch vụ hỗ trợ → 52.7% churn. Không dùng Internet → rủi ro tự nhiên rất thấp.",
+            },
+            {
+              icon: "👴",
+              title: "SeniorCitizen",
+              churn: "60.3%",
+              bg: "bg-purple-50 border-purple-200 dark:bg-purple-900/20 dark:border-purple-700",
+              text: "text-purple-700 dark:text-purple-300",
+              note: "Cao tuổi + sống độc lập → 60.3% rủi ro do rào cản công nghệ. Nhóm nhỏ nhưng rủi ro rất cao.",
+            },
+            {
+              icon: "⚥",
+              title: "Gender (Giới tính)",
+              churn: "~0%",
+              bg: "bg-gray-50 border-gray-200 dark:bg-navy-700 dark:border-white/10",
+              text: "text-gray-600 dark:text-gray-400",
+              note: "Đặc trưng Nhiễu hệ thống (Zero-Signal). Tỷ lệ giữa Nam và Nữ hoàn toàn đồng đều, không mang giá trị dự đoán.",
+            },
+            {
+              icon: "📺",
+              title: "Streaming (TV & Movies)",
+              churn: "~27%",
+              bg: "bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-700",
+              text: "text-blue-700 dark:text-blue-300",
+              note: "Ngay cả khi có cả 2 dịch vụ Streaming, rủi ro vẫn ~27.2%. Các nền tảng bên thứ ba thay thế dễ dàng.",
+            },
+          ].map((item) => (
+            <div
+              key={item.title}
+              className={`rounded-xl border p-3 ${item.bg}`}
+            >
+              <div className="flex items-center justify-between mb-1">
+                <p className={`text-xs font-bold ${item.text}`}>
+                  {item.icon} {item.title}
+                </p>
+                <span className={`text-xs font-bold px-2 py-0.5 rounded-full bg-white/60 ${item.text}`}>
+                  ≈{item.churn}
+                </span>
+              </div>
+              <p className="text-xs text-gray-600 dark:text-gray-300">{item.note}</p>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
 
 export default BivariateAnalysis;
+

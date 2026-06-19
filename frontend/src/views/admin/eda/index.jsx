@@ -2,19 +2,19 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import api from "utils/api";
 import OverviewCards from "./components/OverviewCards";
+import ChurnDistribution from "./components/ChurnDistribution";
 import DescriptiveStats from "./components/DescriptiveStats";
 import UnivariateAnalysis from "./components/UnivariateAnalysis";
 import BivariateAnalysis from "./components/BivariateAnalysis";
+import FeatureEngineeringSummary from "./components/FeatureEngineeringSummary";
+import NotebookCharts from "./components/NotebookCharts";
 
 const EDADashboard = () => {
-  // Fix #1: Gọi /overview một lần duy nhất ở đây, truyền xuống các component con qua props
   const [overviewData, setOverviewData] = useState(null);
   const [overviewError, setOverviewError] = useState(null);
 
   useEffect(() => {
-    // Fix #2: Dùng AbortController để hủy request khi rời trang → tránh Memory Leak
     const controller = new AbortController();
-
     api.get("/api/v1/eda/overview", { signal: controller.signal })
       .then((res) => setOverviewData(res.data))
       .catch((err) => {
@@ -22,13 +22,12 @@ const EDADashboard = () => {
           setOverviewError("Không thể kết nối Backend. Hãy chắc chắn uvicorn đang chạy ở cổng 8000!");
         }
       });
-
-    // Cleanup: hủy request nếu người dùng rời khỏi trang EDA
     return () => controller.abort();
   }, []);
 
   return (
     <div className="mt-3 flex flex-col gap-5">
+      {/* Tiêu đề trang */}
       <div>
         <h1 className="text-2xl font-bold text-navy-700 dark:text-white">
           EDA Dashboard (Trực quan hoá dữ liệu)
@@ -38,18 +37,33 @@ const EDADashboard = () => {
         </p>
       </div>
 
-      {/* Hiển thị lỗi kết nối nếu không lấy được dữ liệu cơ bản */}
+      {/* Hiển thị lỗi kết nối */}
       {overviewError && (
         <div className="rounded-[20px] bg-red-50 border border-red-200 p-4 text-red-700 dark:bg-red-900/20 dark:text-red-400">
           ⚠️ {overviewError}
         </div>
       )}
 
-      {/* Truyền overviewData xuống các component con qua props */}
+      {/* Section 1: Thống kê nhanh */}
       <OverviewCards overviewData={overviewData} />
+
+      {/* Section 2: Phân bố Churn */}
+      <ChurnDistribution />
+
+      {/* Section 3: Thống kê mô tả */}
       <DescriptiveStats />
+
+      {/* Section 4: Biểu đồ thực từ notebook – 16 charts */}
+      <NotebookCharts />
+
+      {/* Section 5: Phân phối đơn biến (interactive – API) */}
       <UnivariateAnalysis overviewData={overviewData} />
+
+      {/* Section 6: Tương quan & Bivariate (interactive – API) */}
       <BivariateAnalysis overviewData={overviewData} />
+
+      {/* Section 7: Feature Engineering & Risk Analysis */}
+      <FeatureEngineeringSummary />
     </div>
   );
 };
