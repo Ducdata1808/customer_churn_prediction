@@ -262,9 +262,9 @@ class EDAService:
         counts, bin_edges = np.histogram(data, bins=bins)
         
         insights_map = {
-            "tenure": "Thời gian sử dụng dịch vụ (tenure) tập trung cực kỳ nhiều ở nhóm khách hàng mới (1-5 tháng). Phân phối không có điểm ngoại lai (outliers), giúp bảo toàn tính chất nguyên bản của thời gian gắn bó.",
-            "MonthlyCharges": "Cước phí hàng tháng phân bố khá rộng với hai đỉnh lớn: một ở mức cước thấp (xấp xỉ 20 USD) và một ở phân khúc cao (70-90 USD), thể hiện sự phân hóa rõ rệt của khách hàng.",
-            "TotalCharges": "Tổng cước phí tích lũy (TotalCharges) bị lệch phải rõ rệt do phần lớn khách hàng mới tích lũy ít cước phí, trong khi nhóm khách hàng lâu năm tích lũy cước phí cao."
+            "tenure": "Thời gian gắn bó chứng minh vai trò thiết yếu trong việc giữ chân khách hàng (tương quan -0.42). Vòng đời khách hàng càng dài, mức độ gắn bó với hệ sinh thái càng cao, tỷ lệ rời bỏ càng thấp.",
+            "MonthlyCharges": "Phân bố cước phí chứng minh khách hàng cực kỳ nhạy cảm về giá. Nhóm tiếp tục sử dụng tập trung với mật độ rất cao ở mức cước thấp (xấp xỉ $20), trong khi nhóm rời bỏ tạo đỉnh ở phân khúc cao ($70-$100).",
+            "TotalCharges": "Tổng cước phí có độ trùng lặp thông tin rất cao với Thời gian gắn bó. Mức tương quan với mục tiêu chỉ đạt -0.22, thấp hơn hẳn so với Thời gian gắn bó (-0.42)."
         }
         insight = insights_map.get(column_name, "Dữ liệu phân phối ổn định, không phát hiện điểm dị biệt nghiêm trọng.")
 
@@ -296,10 +296,10 @@ class EDAService:
         total = len(self.df)
         
         insights_map = {
-            "Churn": "Tỷ lệ khách hàng rời bỏ dịch vụ (Churn = Yes) chiếm khoảng 22.8%, cho thấy tập dữ liệu có sự mất cân bằng nhóm khá rõ rệt nhưng chưa đến mức cực đoan.",
-            "PaymentMethod": "Phương thức Electronic check chiếm ưu thế lớn nhất trong nhóm khách hàng rời đi, trong khi các phương thức tự động (Credit card, Bank transfer) có tính ổn định cao hơn.",
-            "Contract": "Hợp đồng ngắn hạn Month-to-month chiếm đa số và cũng là nhóm có tỷ lệ rời đi cao nhất, cho thấy tính cam kết thấp từ phía khách hàng.",
-            "InternetService": "Khách hàng sử dụng dịch vụ cáp quang (Fiber optic) chiếm tỷ trọng lớn và có tỷ lệ Churn rất đáng chú ý so với nhóm dùng DSL hoặc không dùng Internet."
+            "Churn": "Tỷ lệ rời bỏ hiện tại là thông số nền tảng của bài toán. Rủi ro rời bỏ dịch vụ tỷ lệ nghịch với quy mô khách hàng; nhóm rủi ro cao nhất thường chiếm dung lượng mẫu thấp nhất và ngược lại.",
+            "PaymentMethod": "Phương thức thanh toán sở hữu mức phân hóa rủi ro lên đến 41.97%. Nhóm dùng Electronic check có rủi ro rời bỏ tới 48.91%, trong khi nhóm thanh toán tự động (Credit card/Bank transfer) chỉ ở mức 6-7%.",
+            "Contract": "Độ chênh lệch rủi ro giữa các loại hợp đồng đạt 41.06%. Hợp đồng Month-to-month mang rủi ro hủy dịch vụ 42.05%, trong khi cam kết 2 năm gần như triệt tiêu rủi ro này (chỉ 1%).",
+            "InternetService": "Nhóm khách hàng cáp quang (Fiber optic) nhạy cảm với rủi ro rời bỏ. Khi kết hợp cùng hợp đồng ngắn hạn, đây trở thành 'Siêu cờ Tổ hợp rủi ro' mạnh nhất của bộ dữ liệu."
         }
         insight = insights_map.get(column_name, f"Phân phối tần suất của đặc trưng {column_name} cho thấy cơ cấu phân lớp rõ ràng giữa các nhóm thuộc tính.")
 
@@ -325,13 +325,13 @@ class EDAService:
             raise ValueError("Churn or feature column missing.")
             
         insights_map = {
-            "PaymentMethod": "Phương thức Electronic check có tỷ lệ Churn cao vượt trội đạt 48.91% (rủi ro cao nhất), trong khi Credit card tự động chỉ có 6.93% (rủi ro thấp nhất), chênh lệch phân hóa đạt tới 41.97%.",
-            "Contract": "Hợp đồng Month-to-month có tỷ lệ Churn rất cao (42.05%), trong khi hợp đồng 2 năm gần như triệt tiêu rủi ro rời đi khi tỷ lệ Churn chỉ ở mức 1.00%, độ phân hóa đạt 41.06%.",
-            "InternetService": "Khách hàng sử dụng Fiber optic đối mặt tỷ lệ Churn lên đến 41.54% so với chỉ 1.43% ở nhóm không dùng Internet. Đây là đặc trưng phân hóa cực kỳ quan trọng.",
-            "gender": "Tỷ lệ rời bỏ dịch vụ giữa Nam và Nữ là đồng đều một cách tuyệt đối (Nam: 22.23%, Nữ: 22.80%), độ phân hóa chỉ 0.57%. Đặc trưng này mang lại Information Gain quá thấp và nên loại bỏ để tránh nhiễu.",
-            "SeniorCitizen": "Nhóm người cao tuổi (SeniorCitizen = Yes) có tỷ lệ rời đi lên đến 50.03% so với 18.98% ở nhóm trẻ, cho thấy phân khúc này cần có sự chăm sóc đặc biệt.",
-            "tenure": "Nhóm khách hàng rời đi (Churn = Yes) có thời gian gắn bó (tenure) trung bình ngắn hơn đáng kể so với nhóm ở lại (Churn = No).",
-            "MonthlyCharges": "Khách hàng rời đi (Churn = Yes) có mức cước phí hàng tháng trung bình cao hơn rõ rệt (khoảng 74.4 USD) so với nhóm ở lại (61.2 USD)."
+            "PaymentMethod": "Phương thức Electronic check sở hữu mức phân hóa mạnh nhất với tỷ lệ rời bỏ đạt mốc 48.91%, trong khi Credit card tự động chỉ 6.93%. Mức chênh lệch rủi ro lên tới 41.97%.",
+            "Contract": "Hợp đồng Month-to-month mang rủi ro hủy dịch vụ 42.05%. Ở chiều ngược lại, cam kết dài hạn 2 năm gần như triệt tiêu hoàn toàn rủi ro rời đi khi chỉ còn 1.00%.",
+            "InternetService": "Dịch vụ Internet là lõi của hệ sinh thái. Nhóm không dùng Internet có rủi ro tự nhiên rất thấp, trong khi nhóm dùng cáp quang thiếu dịch vụ hỗ trợ (Security/TechSupport) có tỷ lệ rời bỏ vọt lên tới 52.7%.",
+            "gender": "Giới tính là đặc trưng Nhiễu hệ thống (Zero-Signal). Tỷ lệ rời bỏ giữa Nam và Nữ hoàn toàn đồng đều, không mang lại giá trị phân tách trong việc hỗ trợ dự báo.",
+            "SeniorCitizen": "Phân khúc lớn tuổi và sống độc lập bị cô lập ở vùng rủi ro cực đại với tỷ lệ rời bỏ đỉnh điểm 60.3% do rào cản công nghệ, nhưng quy mô tệp khách này khá nhỏ.",
+            "tenure": "Khách hàng mới (1-5 tháng) nằm ở vùng rủi ro cộng hưởng lớn. Vòng đời càng dài, hệ số tương quan nghịch càng phát huy sức mạnh giúp kéo tỷ lệ Churn xuống đáy.",
+            "MonthlyCharges": "Khách hàng không phản ứng tuyến tính theo cước hàng tháng mà theo ngưỡng tâm lý. Áp lực chi phí cao ở giai đoạn đầu (Onboarding) sẽ kích hoạt tỷ lệ hủy dịch vụ báo động."
         }
         insight = insights_map.get(feature_name, f"Đặc trưng {feature_name} thể hiện sự phân hóa nhất định đối với biến mục tiêu Churn.")
 
@@ -385,10 +385,9 @@ class EDAService:
         logger.info("Tính toán tương quan thành công cho các cột: %s", valid_cols)
         
         insight = (
-            "Ma trận tương quan cho thấy sự xuất hiện của các chỉ số mới mang ý nghĩa kinh tế rất rõ rệt: "
-            "average_cost_per_service tương quan thuận rất cao với MonthlyCharges (0.76) nhưng tương quan nghịch với total_active_services (-0.31). "
-            "Chỉ số security_score cho thấy mối tương quan âm rõ rệt với tỉ lệ rời bỏ dịch vụ, củng cố giả thuyết rằng khách hàng sử dụng "
-            "các lớp bảo mật bảo vệ có xu hướng gắn bó lâu dài hơn."
+            "Bảng xếp hạng tương quan trực quan hóa sự áp đảo hoàn toàn của nhóm đặc trưng phái sinh so với dữ liệu nguyên bản. "
+            "Tổ hợp rủi ro (0.54), Tỷ lệ Áp lực chi phí (0.53) và Điểm Khiên Bảo vệ (0.49) giữ các vị trí dẫn đầu, "
+            "nhận diện chính xác các điểm gãy khiến khách hàng rời bỏ dịch vụ."
         )
 
         return {

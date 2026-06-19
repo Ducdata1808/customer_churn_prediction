@@ -1,103 +1,166 @@
-# [Horizon UI TailwindCSS React ⚡️](https://horizon-ui.com/horizon-tailwind-react) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=Check%20Horizon%20UI,%20the%20trendiest%20open-source%20admin%20template%20for%20%23tailwindcss%20and%20%23react!%0A%0Ahorizon-ui.com%20)
+# Frontend – Customer Churn Prediction Dashboard
 
-![version](https://img.shields.io/badge/version-2.0.0-brightgreen.svg)
-![license](https://img.shields.io/badge/license-MIT-blue.svg)
-[![GitHub issues open](https://img.shields.io/github/issues/horizon-ui/horizon-tailwind-react.svg?maxAge=2592000)](https://github.com/horizon-ui/horizon-tailwind-react/issues?q=is%3Aopen+is%3Aissue)
-
-<p>&nbsp;</p>
-
-[<img alt="Horizon UI - Tailwind CSS React Admin dashboard template" src="https://i.ibb.co/1zhBQ2J/horizon-ui-tailwind-2.png" />](https://github.com/horizon-ui/horizon-tailwind-react)
-
-<p>&nbsp;</p>
-
-Get started and build your dream web app with Horizon UI, the trendiest & innovative Open Source Admin Template for Tailwind CSS & React!
+Giao diện Web Dashboard cho dự án **Customer Churn Prediction**, được xây dựng trên nền tảng [Horizon UI (React + Tailwind CSS)](https://horizon-ui.com/horizon-tailwind-react) và kết nối trực tiếp với **FastAPI Backend**.
 
 ---
 
-### Introduction
+## 🎯 Mục đích
 
-Designed for those who like modern UI elements and beautiful websites. Made of hundred of elements, designed blocks and fully coded pages, Horizon UI is ready to help you create stunning websites and webapps.
+Cung cấp một giao diện trực quan, tương tác để khám phá và phân tích bộ dữ liệu Customer Churn thông qua các biểu đồ động, thống kê mô tả và nhận xét tự động từ kết quả EDA đã nghiên cứu.
 
-Save hundreds of hours trying to create and develop a dashboard from scratch.
-The fastest, most responsive & trendiest dashboard for Tailwind CSS is here. Seriously.
+---
 
-With Horizon UI you will find many examples for pages like NFTs Pages,
-Authentication Pages, Profile and so on. Just choose between a Basic Design or a cover and you are good to go!
+## 📁 Cấu trúc thư mục
 
-### 🎉 [NEW] Horizon UI Components
-
-All the main components from both versions, this will help you to see and interact with all & the latest added components of Horizon (also, new components are on the way, stay tuned)! ⚡️
-<a href="https://horizon-ui.com/components/?ref=readme-horizon-tailwind-react" target="_blank">See all components</a>
-
-### Documentation
-
-Each element is well presented in a very complex documentation. You can read more about the <a href="https://horizon-ui.com/docs-tailwind/docs/react/installation?ref=readme-horizon-tailwind-react" target="_blank">documentation here.</a>
-
-### Quick Start
-
-Install Horizon UI by running either of the following:
-
-- Install NodeJS LTS from [NodeJs Official Page](https://nodejs.org/en/?ref=horizon-documentation) (NOTE: Product only works with LTS version).
-
-Clone the repository with the following command:
-
-```bash
-git clone https://github.com/horizon-ui/horizon-tailwind-react.git
+```
+frontend/
+├── public/
+│   └── eda_charts/              # 16 biểu đồ PNG trích xuất từ notebook trocungDucLevan.ipynb
+│       ├── chart_00.png ~ chart_15.png
+│       └── manifest.json        # Metadata (tiêu đề, nhận xét) cho từng biểu đồ
+├── src/
+│   ├── components/              # Các component UI dùng chung (Widget, Calendar, Charts...)
+│   ├── routes.js                # Định nghĩa toàn bộ đường dẫn của ứng dụng
+│   ├── utils/
+│   │   └── api.js               # Axios instance – cấu hình base URL kết nối Backend
+│   └── views/
+│       └── admin/
+│           ├── default/         # Dashboard tổng quan mặc định (Horizon UI template)
+│           └── eda/             # 🌟 EDA Dashboard – Tính năng chính của dự án
+│               ├── index.jsx    # Orchestrator: fetch dữ liệu và phân phối xuống component con
+│               └── components/
+│                   ├── OverviewCards.jsx             # Thẻ KPI tổng quan bộ dữ liệu
+│                   ├── ChurnDistribution.jsx         # Donut chart phân bố Churn Yes/No
+│                   ├── DescriptiveStats.jsx          # Bảng thống kê mô tả biến định lượng
+│                   ├── NotebookCharts.jsx            # 16 biểu đồ thực từ notebook EDA
+│                   ├── UnivariateAnalysis.jsx        # Biểu đồ phân phối đơn biến (Histogram / Donut)
+│                   ├── BivariateAnalysis.jsx         # Heatmap tương quan & phân tích đa biến vs Churn
+│                   └── FeatureEngineeringSummary.jsx # Tóm tắt Feature Engineering & Risk Flags
+├── package.json
+└── README.md
 ```
 
-Run in terminal this command:
+---
+
+## 🌟 Tính năng EDA Dashboard (`/admin/eda`) – v2.0
+
+### 1. Overview Cards (Thẻ KPI)
+- Hiển thị tổng quan nhanh: **số dòng, số cột, giá trị thiếu, dòng trùng lặp**.
+- Nhận xét kiểm định dữ liệu (Sanity Check) từ Mục 3 notebook.
+- Dữ liệu lấy từ API: `GET /api/v1/eda/overview`
+
+### 2. Churn Distribution (Phân bố Biến mục tiêu)
+- **Donut Chart** tỷ lệ Churn Yes (22.5%) / No (77.5%).
+- Thẻ thống kê số lượng khách hàng từng nhóm + tỷ lệ mất cân bằng 3.5:1.
+- Dữ liệu lấy từ API: `GET /api/v1/eda/distribution/categorical/Churn`
+
+### 3. Descriptive Statistics (Thống kê Mô tả)
+- Bảng chi tiết: **Mean, Min, Max, Q1, Q3, Skewness** cho các biến định lượng.
+- Nhận xét phân phối Bimodal (tenure), Right-skewed (TotalCharges).
+- Dữ liệu lấy từ API: `GET /api/v1/eda/numerical-stats`
+
+### 4. Phân tích Khám phá Dữ liệu – 16 Biểu đồ từ Notebook ⭐ MỚI
+- Hiển thị **16 biểu đồ matplotlib/seaborn** được trích xuất trực tiếp từ `trocungDucLevan.ipynb`.
+- Được nhóm thành 4 section với bộ lọc tab:
+  - 📊 **Phân tích Đơn biến** (3 biểu đồ): Histogram, Categorical Distribution, Churn Target
+  - 🔍 **Phân tích Song biến** (4 biểu đồ): KDE vs Churn, Risk Gap, Service Retention
+  - ⚙️ **Feature Engineering** (5 biểu đồ): Risk Matrix Heatmap, Financial Ratios, Security Score, Risk Flags, Demographics
+  - 🔗 **Tương quan Toàn cục** (4 biểu đồ): Pearson, Spearman, Cramér's V, Feature Ranking
+- **Click vào biểu đồ** → Modal phóng to kèm nhận xét chi tiết đầy đủ từ notebook.
+- Ảnh được lưu tại `public/eda_charts/`, không phụ thuộc Backend.
+
+### 5. Univariate Analysis (Phân tích Đơn biến – Tương tác)
+- Dropdown chọn biến → tự động nhận diện loại biến:
+  - **Biến định lượng** → Histogram (ApexCharts)
+  - **Biến định tính** → Donut Chart (ApexCharts)
+- Kèm **Nhận xét tự động** từ notebook EDA.
+- Dữ liệu lấy từ API: `GET /api/v1/eda/distribution/{type}/{column_name}`
+
+### 6. Bivariate & Correlation Analysis (Phân tích Đa biến)
+- **Correlation Heatmap**: Ma trận tương quan Pearson giữa các đặc trưng định lượng và phái sinh.
+- **So sánh vs Churn**: Dropdown → Grouped Bar (định tính) hoặc Boxplot (định lượng).
+- **Bảng Điểm chính**: 6 thẻ nhận xét nhanh về Contract, PaymentMethod, InternetService, SeniorCitizen, Gender, Streaming.
+- Dữ liệu lấy từ API: `GET /api/v1/eda/correlation` và `GET /api/v1/eda/bivariate/{feature}`
+
+### 7. Feature Engineering & Risk Analysis (Phân tích Rủi ro)
+- **4 thẻ Cờ rủi ro hành vi**: composite_risk_profile (55%), zero_supportive_service (52.7%), manual_payment (34%), security_score.
+- **2 biểu đồ Bar Chart** tương tác: Tỷ lệ Churn theo `loyalty_tier` và `charge_segment`.
+- **Bảng 3 cột** nhận xét Ma trận Rủi ro (Onboarding+Premium=77.4%, Loyal+Budget=0.4%).
+- Dữ liệu lấy từ API: `GET /api/v1/eda/bivariate/loyalty_tier` và `GET /api/v1/eda/bivariate/charge_segment`
+
+---
+
+## ⚙️ Thiết kế kỹ thuật
+
+| Kỹ thuật | Chi tiết |
+|---|---|
+| **Framework** | React 18 + Tailwind CSS |
+| **Template gốc** | Horizon UI (React Tailwind) |
+| **Biểu đồ tương tác** | `react-apexcharts` |
+| **Biểu đồ notebook** | PNG trích xuất từ `.ipynb` (base64 decode) |
+| **HTTP Client** | `axios` – cấu hình tập trung tại `src/utils/api.js` |
+| **State Management** | React Hooks (`useState`, `useEffect`) |
+| **Tránh memory leak** | `AbortController` trong mọi `useEffect` |
+| **Props Lifting** | `index.jsx` fetch `overview` 1 lần, truyền xuống các component con |
+
+---
+
+## 🚀 Hướng dẫn chạy
+
+### Yêu cầu
+- Node.js (LTS version)
+- Backend FastAPI đang chạy tại cổng `8000`
+
+### Các bước
 
 ```bash
+# 1. Cài đặt thư viện (chỉ cần chạy lần đầu)
 npm install
-```
 
-Then run this command to start your local server
-
-```bash
+# 2. Khởi động môi trường development
 npm start
 ```
 
-### Example Pages
+Ứng dụng sẽ mở tại: **http://localhost:3000**
 
-If you want to get inspiration or just show something directly to your clients, you can jump start your development with our pre-built example pages. You will be able to quickly set up the basic structure for your web project.
-
-View <a href="https://horizon-ui.com/horizon-tailwind-react/?ref=readme-horizon-tailwind-react" target="_blank">example pages here.</a>
-
-### Versions
-
-| Free Version                                                                                                                                          | PRO Version                                                                                                                                                    |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [![Horizon UI Tailwind CSS React](https://i.ibb.co/1zhBQ2J/horizon-ui-tailwind-2.png)](https://www.horizon-ui.com/?ref=readme-horizon-tailwind-react) | [![Horizon UI Tailwind CSS React PRO](https://i.ibb.co/d0cVzKB/horizon-ui-pro-tailwind.png)](https://www.horizon-ui.com/pro?ref=readme-horizon-tailwind-react) |
-
-### Figma Version
-
-Horizon UI is available in Figma format as well! Check it out on Figma
-Community! 🎨
-[See the Horizon UI Figma design files](https://bit.ly/horizon-figma)
-
-### Reporting Issues
-
-We use GitHub Issues as the official bug tracker for the Horizon UI. Here are
-some advices for our users that want to report an issue:
-
-1. Make sure that you are using the latest version of the Horizon UI Dashbaord.
-   Check the CHANGELOG from your dashboard on our
-   [CHANGE LOG File](https://github.com/horizon-ui/horizon-tailwind-react/blob/main/CHANGELOG.md?ref=readme-horizon-tailwind-react).
-2. Providing us reproducible steps for the issue will shorten the time it takes
-   for it to be fixed.
-3. Some issues may be browser specific, so specifying in what browser you
-   encountered the issue might help.
+Truy cập EDA Dashboard tại: **http://localhost:3000/admin/eda**
 
 ---
 
-### Community
+## 🔗 Kết nối Backend API
 
-Connect with the community! Feel free to ask questions, report issues, and meet new people that already use Horizon UI!
+File cấu hình: `src/utils/api.js`
 
-💬 [Join the #HorizonUI Discord Community!](https://discord.gg/f6tEKFBd4m)
+```js
+import axios from "axios";
 
-### Copyright and license
+const api = axios.create({
+  baseURL: process.env.REACT_APP_API_URL || "http://localhost:8000",
+});
 
-⭐️ [Copyright 2023 Horizon UI ](https://www.horizon-ui.com/?ref=readme-horizon-tailwind-react)
+export default api;
+```
 
-📄 [Horizon UI License](https://www.simmmple.com/licenses?ref=readme-horizon-tailwind-react)
+Để thay đổi địa chỉ Backend, tạo file `.env` trong thư mục `frontend/`:
+
+```
+REACT_APP_API_URL=http://your-backend-url:8000
+```
+
+---
+
+## 📦 Dependencies chính
+
+| Package | Mục đích |
+|---|---|
+| `react` | Core framework |
+| `react-apexcharts` | Vẽ biểu đồ tương tác |
+| `axios` | HTTP requests đến Backend API |
+| `react-icons` | Icon library |
+| `tailwindcss` | CSS utility framework |
+
+---
+
+## 🏷️ Giấy phép giao diện gốc
+
+Giao diện này được xây dựng dựa trên template mã nguồn mở [Horizon UI (React Tailwind CSS)](https://horizon-ui.com/horizon-tailwind-react) được cấp phép theo [MIT License](https://www.simmmple.com/licenses).

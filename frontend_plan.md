@@ -1,6 +1,6 @@
 # Kế hoạch Phát triển Frontend – Dự án Customer Churn Prediction
 
-Kế hoạch này vạch ra kiến trúc, giao diện và cách tích hợp 3 tính năng chính vào mẫu giao diện **Horizon UI (React Tailwind CSS)** đã được clone. Giao diện này sẽ kết nối trực tiếp với các API từ FastAPI Backend.
+Kế hoạch này vạch ra kiến trúc, giao diện và cách tích hợp 3 tính năng chính vào mẫu giao diện **Horizon UI (React Tailwind CSS)** đã được clone. Giao diện này sẽ kết nối trực tiếp với các API từ FastAPI Backend.p
 
 ---
 
