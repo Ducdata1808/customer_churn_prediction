@@ -69,7 +69,8 @@ Sau khi đã có mô hình trong thư mục `artifacts/`, bạn có thể khởi
 1. Đảm bảo bạn đang ở thư mục gốc của dự án và môi trường ảo Python đã được kích hoạt.
 2. Chạy lệnh sau để khởi động server trên cổng **`8002`** (đây là cổng mặc định mà Frontend sẽ gọi):
    ```bash
-   uvicorn backend.app.main:app --reload --host 0.0.0.0 --port 8002
+   cd backend
+   uvicorn app.main:app --reload --host 0.0.0.0 --port 8002
    ```
 3. **Kiểm tra hoạt động:**
    * Truy cập `http://localhost:8002/` trên trình duyệt để kiểm tra trạng thái API (nếu hiển thị `{"status": "ok", ...}` là thành công).
