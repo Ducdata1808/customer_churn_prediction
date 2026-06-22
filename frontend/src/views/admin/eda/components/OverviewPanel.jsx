@@ -3,7 +3,7 @@ import Card from "components/card";
 import Widget from "components/widget/Widget";
 import { MdGridOn, MdWarning, MdAnalytics, MdCheckCircle } from "react-icons/md";
 import { IoDocuments } from "react-icons/io5";
-import { SectionLabel } from "./common";
+import { SectionLabel, NotebookChart } from "./common";
 
 const OverviewPanel = ({ ov }) => {
   return (
@@ -94,6 +94,21 @@ const OverviewPanel = ({ ov }) => {
           </ul>
         </Card>
       </div>
+
+      {/* ── Biểu đồ notebook 02: Phân bố 16 biến định tính ── */}
+      <NotebookChart
+        src="/eda_charts/02_categorical_distribution.png"
+        label="Phân bố biến định tính — Grid Bar Charts (notebook cell 71)"
+        title="Phân bố tần suất 16 biến định tính trong tập dữ liệu"
+        color="blue"
+        maxH="560px"
+        points={[
+          "Tập dữ liệu có tính phân nhánh khá đồng đều. Phần lớn đặc trưng chỉ xoay quanh 2 đến 3 nhãn phân biệt, đặc trưng có độ phức tạp cao nhất PaymentMethod cũng chỉ mang 4 giá trị.",
+          "Không xuất hiện tình trạng nhãn hiếm (Rare Labels) — tất cả nhóm giá trị đều chiếm tỷ trọng đáng kể, thấp nhất là 6.1% ở PhoneService.",
+          "PhoneService có nhãn Yes chiếm ưu thế tuyệt đối 93.89%. Các dịch vụ bổ trợ như OnlineSecurity, TechSupport, StreamingTV đều có nhóm khách hàng không dùng Internet chiếm tỷ lệ cố định 23.7%.",
+          "Contract phân bố rõ ràng: Month-to-month chiếm đa số (55.3%), One year (21.1%), Two year (23.6%) — phản ánh sự ưa thích linh hoạt nhưng cũng là rủi ro churn cao nhất.",
+        ]}
+      />
     </div>
   );
 };

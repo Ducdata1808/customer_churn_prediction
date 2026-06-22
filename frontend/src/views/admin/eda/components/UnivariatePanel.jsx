@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Chart from "react-apexcharts";
 import Card from "components/card";
-import { SectionLabel, Spin, getChartBase, BRAND, TEAL, AMBER } from "./common";
+import { SectionLabel, Spin, getChartBase, BRAND, TEAL, AMBER, NotebookChart } from "./common";
 
 const API = process.env.REACT_APP_API_URL || "http://localhost:8000";
 
@@ -99,10 +99,10 @@ const UnivariatePanel = ({ ov, isDark }) => {
           </div>
           <select value={uniCol} onChange={(e) => setUniCol(e.target.value)} className={selectCls}>
             <optgroup label="Numerical">
-              {ov?.feature_roles?.numerical.map((c) => <option key={c} value={c}>{c}</option>)}
+              {ov?.feature_roles?.numerical?.map((c) => <option key={c} value={c}>{c}</option>)}
             </optgroup>
             <optgroup label="Categorical">
-              {ov?.feature_roles?.categorical.map((c) => <option key={c} value={c}>{c}</option>)}
+              {ov?.feature_roles?.categorical?.map((c) => <option key={c} value={c}>{c}</option>)}
             </optgroup>
           </select>
         </div>
@@ -152,7 +152,7 @@ const UnivariatePanel = ({ ov, isDark }) => {
         ) : null}
       </Card>
 
-      {/* ── Notebook Insights ── */}
+      {/* ── Notebook Insights Cards ── */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <InsightCard
           color="orange"
@@ -182,6 +182,34 @@ const UnivariatePanel = ({ ov, isDark }) => {
           ]}
         />
       </div>
+
+      {/* ── Biểu đồ notebook 03: Phân bố biến mục tiêu Churn ── */}
+      <NotebookChart
+        src="/eda_charts/03_churn_target_distribution.png"
+        label="Phân bố biến mục tiêu — Donut Chart (notebook cell 77)"
+        title="Phân bố nhãn Churn: Tiếp tục sử dụng vs Rời bỏ dịch vụ"
+        color="orange"
+        maxH="380px"
+        points={[
+          "Tỷ lệ xấp xỉ 3.5 : 1 — nhóm tiếp tục (77.5%) so với nhóm rời bỏ (22.5%). Mức mất cân bằng này ở ngưỡng vừa phải, có thể xử lý bằng SMOTE hoặc class_weight.",
+          "Nhóm khách hàng rời bỏ dịch vụ — nhóm mục tiêu cốt lõi cần dự đoán — chiếm thiểu số nhưng có tác động tài chính lớn nhất.",
+          "Không cần oversampling quá mức vì tỷ lệ 3.5:1 chưa đủ nghiêm trọng để gây ra hiện tượng mô hình thiên lệch nặng.",
+        ]}
+      />
+
+      {/* ── Biểu đồ notebook 04: Numerical vs Churn KDE + Boxplot ── */}
+      <NotebookChart
+        src="/eda_charts/04_numerical_vs_churn.png"
+        label="Phân bố biến định lượng theo Churn — KDE + Boxplot (notebook cell 85)"
+        title="Phân tách hành vi: tenure, MonthlyCharges, TotalCharges theo nhóm Churn"
+        color="blue"
+        maxH="500px"
+        points={[
+          "tenure xuất hiện sự phân tách rõ rệt về hành vi. Nhóm dừng sử dụng dịch vụ tập trung chủ yếu ở giai đoạn trải nghiệm 1–6 tháng đầu tiên. Ngược lại, nhóm trung thành phân tán đều dọc theo toàn bộ vòng đời với mật độ cao nhất sau mốc 48 tháng.",
+          "MonthlyCharges: nhóm tiếp tục dồn mật độ cao ở mức cước thấp ~20$ (gói DSL/No internet). Nhóm rời bỏ tập trung ở phân khúc 70$–105$ — gói Fiber optic với kỳ vọng chất lượng cao hơn.",
+          "TotalCharges: nhóm churn chiếm ưu thế quanh mốc $0 vì phần lớn hủy dịch vụ trong những tháng đầu, chưa kịp tích lũy tổng cước.",
+        ]}
+      />
     </div>
   );
 };

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Chart from "react-apexcharts";
 import Card from "components/card";
-import { SectionLabel, Spin, getChartBase, BRAND, TEAL } from "./common";
+import { SectionLabel, Spin, getChartBase, BRAND, TEAL, NotebookChart } from "./common";
 
 const API = process.env.REACT_APP_API_URL || "http://localhost:8000";
 
@@ -94,10 +94,10 @@ const BivariatePanel = ({ ov, isDark }) => {
           </div>
           <select value={biCol} onChange={(e) => setBiCol(e.target.value)} className={selectCls}>
             <optgroup label="Categorical">
-              {ov?.feature_roles?.categorical.map((c) => <option key={c} value={c}>{c}</option>)}
+              {ov?.feature_roles?.categorical?.map((c) => <option key={c} value={c}>{c}</option>)}
             </optgroup>
             <optgroup label="Numerical">
-              {ov?.feature_roles?.numerical.map((c) => <option key={c} value={c}>{c}</option>)}
+              {ov?.feature_roles?.numerical?.map((c) => <option key={c} value={c}>{c}</option>)}
             </optgroup>
           </select>
         </div>
@@ -117,7 +117,37 @@ const BivariatePanel = ({ ov, isDark }) => {
         ) : null}
       </Card>
 
-      {/* ── Risk Gap Chart (notebook cell 103) ── */}
+      {/* ── Notebook chart 05: Tỷ lệ Churn theo biến định tính ── */}
+      <NotebookChart
+        src="/eda_charts/05_categorical_vs_churn.png"
+        label="Tỷ lệ Churn theo biến định tính — Top 6 đặc trưng (notebook cell 94)"
+        title="Phân hóa churn: PaymentMethod, Contract, InternetService, OnlineSecurity, TechSupport, SeniorCitizen"
+        color="red"
+        maxH="500px"
+        points={[
+          "PaymentMethod sở hữu mức phân hóa mạnh nhất với 41.97%. Khách hàng sử dụng Electronic check có tỷ lệ rời bỏ dịch vụ đạt mốc 48.91%, trong khi nhóm thanh toán tự động thẻ tín dụng chỉ 6.93%.",
+          "Contract — chênh lệch 41.06%. Month-to-month rủi ro hủy 42.05%; Two year gần như triệt tiêu với chỉ 1.00%. Hợp đồng dài hạn là rào cản hiệu quả nhất giúp giữ chân khách hàng.",
+          "InternetService — Fiber optic churn 41.54%; No internet service chỉ 1.4%. Nhóm cáp quang chịu mức cước cao và kỳ vọng chất lượng cao hơn, dẫn đến churn cao hơn khi kỳ vọng không được đáp ứng.",
+          "SeniorCitizen — người cao tuổi có tỷ lệ churn cao gần gấp đôi (41.7% vs 23.6%) do thiếu yếu tố giữ chân gia đình và hạn chế về kỹ năng công nghệ.",
+        ]}
+      />
+
+      {/* ── Notebook chart 06: Expected Churn Segments bubble ── */}
+      <NotebookChart
+        src="/eda_charts/06_expected_churn_segments.png"
+        label="Phân khúc rủi ro dự kiến — Expected Churn Segments (notebook cell 97)"
+        title="Bubble chart: Quy mô phân khúc × Tỷ lệ Churn = Tác động thực tế"
+        color="orange"
+        maxH="440px"
+        points={[
+          "Tỷ lệ rời bỏ dự kiến = Quy mô tệp khách hàng × Tỷ lệ rời bỏ. Phân khúc lớn + tỷ lệ cao = rủi ro tài chính thực sự nhất cần ưu tiên.",
+          "Contract = Month-to-month (47.7% KH) — dự kiến 21.16% khách hàng rời bỏ. Đây là phân khúc ưu tiên số 1 để tác động giữ chân.",
+          "InternetService = Fiber optic (45.9% KH) — 19.04%; PaymentMethod = Electronic check (36.3% KH) — 17.73%.",
+          "Cứ 5 khách hàng sẽ có 1 người thuộc nhóm hợp đồng ngắn hạn rời bỏ dịch vụ — đây là tín hiệu cần hành động ngay.",
+        ]}
+      />
+
+      {/* ── Risk Gap Chart (ApexCharts interactive) ── */}
       <Card extra="p-6">
         <div className="mb-4 flex items-center gap-2">
           <span className="h-2 w-2 rounded-full bg-red-400" />
@@ -144,7 +174,21 @@ const BivariatePanel = ({ ov, isDark }) => {
         </div>
       </Card>
 
-      {/* ── Expected Churn Segments (notebook cell 98) ── */}
+      {/* ── Notebook chart 07: Risk Gap PNG ── */}
+      <NotebookChart
+        src="/eda_charts/07_risk_gap_services.png"
+        label="Risk Gap PNG — Grouped bar chart (notebook cell 102)"
+        title="So sánh tỷ lệ churn giữa nhóm đã đăng ký và chưa đăng ký dịch vụ bổ trợ"
+        color="teal"
+        maxH="380px"
+        points={[
+          "Phân tích độ chênh lệch hủy hợp đồng Risk Gap cho thấy sự trái ngược về sức giữ chân trong hệ sinh thái dịch vụ.",
+          "Nhóm Security & Support (OnlineSecurity, TechSupport) — Risk Gap > 30% — tương đương mỗi 3 khách hàng đăng ký sẽ giữ được 1 người so với không đăng ký.",
+          "Nhóm Streaming (StreamingTV, StreamingMovies) — Risk Gap chỉ 1–2% — không tạo ra rào cản hủy hợp đồng, dễ bị các nền tảng OTT thay thế.",
+        ]}
+      />
+
+      {/* ── Expected Churn Segments Cards ── */}
       <Card extra="p-6">
         <div className="mb-4 flex items-center gap-2">
           <span className="h-2 w-2 rounded-full bg-orange-400" />
