@@ -26,6 +26,13 @@ class EDAService:
             logger.info("Cột 'SeniorCitizen' tồn tại. Tiến hành chuẩn hóa dữ liệu sang 'Yes'/'No'.")
             self.df['SeniorCitizen'] = self.df['SeniorCitizen'].replace({1: 'Yes', 0: 'No'})
 
+        # Loại bỏ khách hàng ma không dùng cả Phone và Internet (Mục 3.4 trong Notebook)
+        if 'PhoneService' in self.df.columns and 'InternetService' in self.df.columns:
+            ghost_customers = self.df[(self.df["PhoneService"] == "No") & (self.df["InternetService"] == "No")]
+            if not ghost_customers.empty:
+                logger.info("Phát hiện và loại bỏ %s khách hàng ma không dùng bất kỳ dịch vụ nào.", len(ghost_customers))
+                self.df = self.df.drop(ghost_customers.index).reset_index(drop=True)
+
         # Chuẩn hóa cột TotalCharges sang numeric để tránh lỗi chuỗi trống
         if 'TotalCharges' in self.df.columns:
             self.df['TotalCharges'] = pd.to_numeric(self.df['TotalCharges'], errors='coerce').fillna(0.0)
