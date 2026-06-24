@@ -1,13 +1,14 @@
 import React from "react";
-import { MdGridOn, MdCheckCircle, MdBarChart, MdBubbleChart, MdTableChart, MdCompareArrows } from "react-icons/md";
+import { MdGridOn, MdCheckCircle, MdBarChart, MdBubbleChart, MdTableChart, MdCompareArrows, MdBuild } from "react-icons/md";
 
 const TABS = [
-  { id: "overview", label: "Tổng quan", icon: MdGridOn, color: "#CC5833" },
-  { id: "sanity", label: "Kiểm tra Logic", icon: MdCheckCircle, color: "#6ea87a" },
-  { id: "stats", label: "Thống kê", icon: MdTableChart, color: "#e8956e" },
-  { id: "univariate", label: "Đơn biến", icon: MdBarChart, color: "#CC5833" },
-  { id: "correlation", label: "Tương quan", icon: MdBubbleChart, color: "#4a9e6e" },
-  { id: "bivariate", label: "Hai biến", icon: MdCompareArrows, color: "#e8956e" },
+  { id: "overview", label: "Khảo sát Tổng quan", icon: MdGridOn, color: "#CC5833" },
+  { id: "stats", label: "Thống kê Mô tả", icon: MdTableChart, color: "#e8956e" },
+  { id: "sanity", label: "Đánh giá Chất lượng", icon: MdCheckCircle, color: "#6ea87a" },
+  { id: "univariate", label: "Phân tích Đơn biến", icon: MdBarChart, color: "#CC5833" },
+  { id: "bivariate", label: "Phân tích Song biến", icon: MdCompareArrows, color: "#e8956e" },
+  { id: "feature_engineering", label: "Kỹ thuật Đặc trưng", icon: MdBuild, color: "#8b5cf6" },
+  { id: "correlation", label: "Phân tích Tương quan", icon: MdBubbleChart, color: "#4a9e6e" },
 ];
 
 const EdaTabs = ({ active, onChange }) => (

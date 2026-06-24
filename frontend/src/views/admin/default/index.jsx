@@ -184,11 +184,19 @@ const Dashboard = () => {
           size: "70%",
           labels: {
             show: true,
+            name: { show: false },
+            value: {
+              show: true,
+              fontSize: "16px",
+              fontWeight: "bold",
+              color: ax,
+              offsetY: 6,
+            },
             total: {
               show: true,
-              label: "Internet",
-              color: ax,
-              formatter: () => "Service",
+              showAlways: true,
+              label: "",
+              formatter: () => "Internet",
             },
           },
         },
@@ -231,9 +239,9 @@ const Dashboard = () => {
 
       {/* KPI Widgets Row */}
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 2xl:grid-cols-5">
-        <Widget icon={<MdWarning className="h-6 w-6" />} title="Tổng khách churn" subtitle={churnCount.toLocaleString()} />
+        <Widget icon={<MdWarning className="h-6 w-6" />} title="Tổng khách rời bỏ dịch vụ" subtitle={churnCount.toLocaleString()} />
         <Widget icon={<MdPeople className="h-6 w-6" />} title="Tổng khách hàng" subtitle={totalSamples.toLocaleString()} />
-        <Widget icon={<MdCheckCircle className="h-6 w-6" />} title="Khách hàng trung thành" subtitle={retainCount.toLocaleString()} />
+        <Widget icon={<MdCheckCircle className="h-6 w-6" />} title="Tổng khách tiếp tục sử dụng dịch vụ" subtitle={retainCount.toLocaleString()} />
         <Widget icon={<IoStatsChart className="h-5 w-5" />} title="Số thuộc tính" subtitle={String(totalFeatures)} />
         <Widget icon={<MdTrendingUp className="h-6 w-6" />} title="Churn Rate" subtitle={`${churnPct}%`} />
       </div>
@@ -265,7 +273,7 @@ const Dashboard = () => {
           <div>
             <p className="text-xs text-gray-500">Giá trị khuyết</p>
             <p className="text-2xl font-bold text-navy-700 dark:text-white">
-              {missingValues === 0 ? "Sạch ✓" : missingValues}
+              {missingValues}
             </p>
           </div>
         </Card>
@@ -339,7 +347,7 @@ const Dashboard = () => {
         <table className="w-full min-w-[600px]">
           <thead>
             <tr className="border-b border-gray-200 dark:border-white/10">
-              {["Feature", "Mức ảnh hưởng", "Hướng tác động", "Risk Score"].map((h) => (
+              {["Feature", "Mức ảnh hưởng", "Hướng tác động", "Risk Score (Tỷ lệ Churn %)"].map((h) => (
                 <th key={h} className="py-2.5 pr-4 text-left text-[10px] uppercase tracking-widest text-gray-500">
                   {h}
                 </th>
