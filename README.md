@@ -31,6 +31,7 @@ customer_churn_prediction/
 ├── requirements.txt                 # Python dependencies
 └── README.md                        # Documentation (file này)
 ```
+Chi tiết hơn về kiến trúc MLflow: https://github.com/Ducdata1808/customer_churn_prediction/blob/main/src/README.md
 
 # 3. Hướng dẫn sử dụng
 
