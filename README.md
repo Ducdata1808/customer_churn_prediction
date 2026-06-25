@@ -124,7 +124,7 @@ Sau khi đã có mô hình trong thư mục `artifacts/`, bạn có thể khởi
 - Kiểm tra hoạt động:
    * Truy cập `http://localhost:8002/` trên trình duyệt để kiểm tra trạng thái API (nếu hiển thị `{"status": "ok", ...}` là thành công).
    * Xem tài liệu API tương tác (Swagger UI) tại: `http://localhost:8002/docs`.
-
+Chi tiết về Backend: https://github.com/Ducdata1808/customer_churn_prediction/tree/main/backend
 ---
 
 # 5. Khởi chạy Giao diện Frontend (React)
@@ -154,4 +154,5 @@ npm start
 *   Ứng dụng sẽ tự động mở trên trình duyệt tại địa chỉ: **`http://localhost:3000`**
 *   Giờ đây, bạn có thể thực hiện EDA, Huấn luyện mô hình từ giao diện, so sánh các tham số và chạy dự báo Churn trực quan hoàn toàn cục bộ!
 
+Chi tiết về Fronted: https://github.com/Ducdata1808/customer_churn_prediction/tree/main/frontend
 
