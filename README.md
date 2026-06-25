@@ -85,6 +85,9 @@ Trong MLflow UI bạn sẽ thấy:
 - **Parameters**: Hyperparameters của từng mô hình
 - **Artifacts**: Models, Confusion Matrix, ROC Curve
 
+![Giao diện MLflow Tracking](images/sample_mlflow.png)
+
+
 ## 3.4 Chạy từng stage riêng lẻ (để debug)
 
 ```bash
@@ -125,6 +128,8 @@ Sau khi đã có mô hình trong thư mục `artifacts/`, bạn có thể khởi
    * Truy cập `http://localhost:8002/` trên trình duyệt để kiểm tra trạng thái API (nếu hiển thị `{"status": "ok", ...}` là thành công).
    * Xem tài liệu API tương tác (Swagger UI) tại: `http://localhost:8002/docs`.*
 
+![Giao diện tài liệu API Swagger](images/sample_test_api.png)
+
 Chi tiết về Backend: https://github.com/Ducdata1808/customer_churn_prediction/tree/main/backend
 
 ---
@@ -144,8 +149,13 @@ npm install --legacy-peer-deps
 
 ## 5.2 Cấu hình biến môi trường
 File cấu hình cục bộ `frontend/.env.local` đã được cấu hình sẵn để kết nối với backend chạy ở localhost:
+- Linux
 ```env
 REACT_APP_API_URL=http://localhost:8002
+```
+- Powershell
+```env
+$env:REACT_APP_API_URL="http://localhost:8002"
 ```
 Nếu bạn chạy backend ở cổng khác, hãy chỉnh sửa giá trị này trong file `frontend/.env.local`.
 
@@ -157,4 +167,18 @@ npm start
 *   Giờ đây, bạn có thể thực hiện EDA, Huấn luyện mô hình từ giao diện, so sánh các tham số và chạy dự báo Churn trực quan hoàn toàn cục bộ!
 
 Chi tiết về Fronted: https://github.com/Ducdata1808/customer_churn_prediction/tree/main/frontend
+
+## 5.4 Một số hình ảnh giao diện ứng dụng
+
+### Dashboard chính
+![Dashboard chính](images/main_dashboard.png)
+
+### Phân tích khám phá dữ liệu (EDA)
+![Phân tích khám phá dữ liệu](images/eda.png)
+
+### So sánh các mô hình huấn luyện
+![So sánh các mô hình](images/model_comparison.png)
+
+### Dự đoán tỷ lệ khách hàng rời bỏ (Churn Prediction)
+![Dự đoán Churn](images/churn_prediction.png)
 
