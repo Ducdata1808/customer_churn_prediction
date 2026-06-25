@@ -139,39 +139,3 @@ FastAPI tự động sinh tài liệu tương tác giúp chạy thử trực ti�
     *   `confusion_matrix`: Mảng 2 chiều đại diện cho Confusion Matrix `[[TN, FP], [FN, TP]]`.
     *   `training_time_seconds`: Thời gian huấn luyện.
 
----
-
-## 3. Hướng dẫn & Quy định kỹ thuật dành cho nhóm Backend
-
-Để đảm bảo dự án chạy ổn định, đồng bộ và dễ tích hợp, các thành viên cần tuân thủ nghiêm ngặt các quy tắc thiết kế sau:
-
-### 📐 1. Kiến trúc phân tách 3 lớp (Layered Architecture)
-Tất cả các tính năng mới phải được tổ chức thành 3 lớp rõ rệt:
-*   **Schemas (`app/schemas/`)**: Định nghĩa dữ liệu đầu vào/đầu ra bằng `pydantic.BaseModel` kèm mô tả `Field(..., description="Mô tả tiếng Việt")` chi tiết để Swagger UI tự hiển thị tài liệu.
-*   **Services (`app/services/`)**: Nơi chứa toàn bộ logic xử lý nghiệp vụ chính, tải mô hình học máy, tính toán. Service tuyệt đối không phụ thuộc vào FastAPI request/response để dễ viết Unit Test độc lập.
-*   **Routes (`app/routes/`)**: Định nghĩa endpoints API, gán Response Model tương ứng và gọi logic từ Service.
-
-### 🔗 2. Đăng ký Router mới vào Hệ thống
-Khi hoàn thành Route mới, hãy import và đăng ký vào ứng dụng FastAPI chính tại file [backend/app/main.py](file:///c:/Users/Admin/Documents/viet_code/python/NMKHDL/customer_churn_prediction/backend/app/main.py) bằng lệnh:
-```python
-from app.routes import predict_route
-app.include_router(predict_route.router)
-```
-
-### 📝 3. Quy chuẩn ghi Log (Logging)
-*   Không sử dụng hàm `print()`. Hãy dùng module `logging` chuẩn của Python:
-    ```python
-    import logging
-    logger = logging.getLogger(__name__)
-    
-    logger.info("Đã tải thành công mô hình dự đoán churn.")
-    logger.error("Lỗi khi đọc file tiền xử lý dữ liệu: %s", str(e))
-    ```
-
-### 🧪 4. Viết Unit Test tự động
-*   Đặt tên file kiểm thử bắt đầu bằng `test_*.py` trong thư mục `tests/`.
-*   Chạy thử bộ test case cục bộ trước khi push code lên Git bằng lệnh:
-    ```bash
-    # Đứng tại thư mục backend
-    pytest tests/ -v
-    ```
