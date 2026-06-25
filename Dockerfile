@@ -15,13 +15,16 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy necessary files for backend services
-COPY backend/ ./backend/
+COPY backend/ /app/backend/
 
-# Set Python path to include the root directory
-ENV PYTHONPATH=/app
+# Set working directory to backend
+WORKDIR /app/backend
+
+# Set Python path to include the backend directory
+ENV PYTHONPATH=/app/backend
 
 # Expose the API port
 EXPOSE 8000
 
-# Start backend using uvicorn
-CMD ["uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Start backend using uvicorn (matching local cd backend & run command)
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
