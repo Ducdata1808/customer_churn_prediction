@@ -19,6 +19,7 @@ class FakeEDAService:
                 "numerical": ["tenure", "MonthlyCharges", "TotalCharges"],
                 "categorical": ["PaymentMethod"],
                 "target": ["Churn"],
+                "feature_engineering": [],
             },
             "insight": "Dataset overview insight",
         }
