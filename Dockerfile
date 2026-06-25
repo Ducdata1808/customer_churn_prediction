@@ -14,12 +14,8 @@ COPY requirements.txt .
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy necessary files for prediction, eda, and training services
+# Copy necessary files for backend services
 COPY backend/ ./backend/
-COPY data/ ./data/
-COPY artifacts/ ./artifacts/
-COPY src/ ./src/
-COPY config/ ./config/
 
 # Set Python path to include the root directory
 ENV PYTHONPATH=/app

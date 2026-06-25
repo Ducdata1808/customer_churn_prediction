@@ -23,8 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 if str(BASE_DIR) not in sys.path:
     sys.path.append(str(BASE_DIR))
 
-TRAIN_DATA_PATH = BASE_DIR / "artifacts" / "data_ingestion" / "train.csv"
-PREPROCESSOR_PATH = BASE_DIR / "artifacts" / "data_transformation" / "preprocessor.joblib"
+TRAIN_DATA_PATH = BASE_DIR / "backend" / "data" / "train.csv"
+PREPROCESSOR_PATH = BASE_DIR / "backend" / "app" / "ml_artifacts" / "preprocessor.joblib"
 TARGET_COL = "Churn"
 
 def load_and_sample_data(sample_size: int, test_size: float):
