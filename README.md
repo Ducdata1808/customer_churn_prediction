@@ -5,6 +5,11 @@ Mini Project của nhóm 14, phục vụ cho học phần nhập môn khoa học
 - Tạo và huấn luyện các mô hình phân loại dựa trên kiến trúc MLflow
 - Trực quan hoá kết quả và thêm các tính năng tương tác qua web interface
 
+Các kết quả đạt được:
+- File EDA notebook: https://github.com/Ducdata1808/customer_churn_prediction/blob/main/EDA/notebook.ipynb
+- File báo cáo kết quả: https://github.com/Ducdata1808/customer_churn_prediction/blob/main/report.pdf
+- Web interface: https://customer-churn-prediction-1c4339jj6.vercel.app/
+
 # 2. Cấu trúc dự án
 ```
 customer_churn_prediction/
