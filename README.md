@@ -1,18 +1,11 @@
-# Customer Churn Prediction - ML Pipeline
+# 1. Tổng quan dự án
+Mini Project của nhóm 14, phục vụ cho học phần nhập môn khoa học dữ liệu. Dự án gồm:
+- EDA để khám phá bộ dữ liệu từ Kaggle: https://www.kaggle.com/competitions/playground-series-s6e3/data
+- Feature Engineering để tạo các đặc trưng cho mô hình phân loại
+- Tạo và huấn luyện các mô hình phân loại dựa trên kiến trúc MLflow
+- Trực quan hoá kết quả và thêm các tính năng tương tác qua web interface
 
-## 🎯 Tổng quan dự án
-
-Dự án này xây dựng một pipeline ML hoàn chỉnh gồm 6 giai đoạn:
-
-1. **Data Ingestion**: Thu thập và giải nén dữ liệu
-2. **Data Validation**: Kiểm tra tính hợp lệ của dữ liệu
-3. **Data Transformation**: Feature engineering, preprocessing, và SMOTE
-4. **Model Training**: Huấn luyện và tối ưu hóa mô hình (LightGBM & XGBoost)
-5. **Model Evaluation**: Đánh giá và tracking với MLflow
-6. **Model Prediction / Inference**: Dự đoán dữ liệu mới (Test Set/Submission)
-
-## 📁 Cấu trúc dự án
-
+# 2. Cấu trúc dự án
 ```
 customer_churn_prediction/
 ├── config/                          # Các file cấu hình
@@ -39,9 +32,9 @@ customer_churn_prediction/
 └── README.md                        # Documentation (file này)
 ```
 
-## 🚀 Hướng dẫn sử dụng
+# 3. Hướng dẫn sử dụng
 
-### 1. Cài đặt môi trường
+## 3.1 Cài đặt môi trường
 
 ```bash
 # Clone repository
@@ -61,7 +54,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 2. Chuẩn bị dữ liệu
+## 3.2 Chuẩn bị dữ liệu
 
 Đặt file `playground-series-s6e3.zip` vào thư mục `data/`:
 
@@ -70,20 +63,12 @@ data/
 └── playground-series-s6e3.zip
 ```
 
-### 3. Chạy toàn bộ pipeline
+## 3.3 Chạy toàn bộ pipeline
 
 ```bash
 python main.py
 ```
-
-**Thời gian ước tính**: 15-20 phút
-
-- Stage 1-3: ~30 giây
-- Stage 4 (Training): ~10-15 phút (GridSearchCV)
-- Stage 5 (Evaluation): ~10 giây
-- Stage 6 (Prediction & Submission): ~15 giây
-
-### 4. Xem kết quả trong MLflow
+Xem kết quả trong MLflow
 
 ```bash
 mlflow ui
@@ -99,7 +84,7 @@ Trong MLflow UI bạn sẽ thấy:
 - **Parameters**: Hyperparameters của từng mô hình
 - **Artifacts**: Models, Confusion Matrix, ROC Curve
 
-### 5. Chạy từng stage riêng lẻ (để debug)
+## 3.4 Chạy từng stage riêng lẻ (để debug)
 
 ```bash
 # Stage 1: Data Ingestion
@@ -126,25 +111,25 @@ python predict.py
 
 ---
 
-## 3. Khởi chạy Backend API (FastAPI)
+# 4. Khởi chạy Backend API (FastAPI)
 Sau khi đã có mô hình trong thư mục `artifacts/`, bạn có thể khởi chạy API server.
 
-1. Đảm bảo bạn đang ở thư mục gốc của dự án và môi trường ảo Python đã được kích hoạt.
-2. Chạy lệnh sau để khởi động server trên cổng **`8002`** (đây là cổng mặc định mà Frontend sẽ gọi):
+- Đảm bảo bạn đang ở thư mục gốc của dự án và môi trường ảo Python đã được kích hoạt.
+- Chạy lệnh sau để khởi động server trên cổng **`8002`** (đây là cổng mặc định mà Frontend sẽ gọi):
    ```bash
    cd backend
    uvicorn app.main:app --reload --host 0.0.0.0 --port 8002
    ```
-3. **Kiểm tra hoạt động:**
+- Kiểm tra hoạt động:
    * Truy cập `http://localhost:8002/` trên trình duyệt để kiểm tra trạng thái API (nếu hiển thị `{"status": "ok", ...}` là thành công).
    * Xem tài liệu API tương tác (Swagger UI) tại: `http://localhost:8002/docs`.
 
 ---
 
-## 4. Khởi chạy Giao diện Frontend (React)
+# 5. Khởi chạy Giao diện Frontend (React)
 Frontend được xây dựng bằng React và kết nối trực tiếp với Backend cục bộ thông qua cổng `8002`.
 
-#### Bước 4.1: Di chuyển vào thư mục frontend & Cài đặt Node modules
+## 5.1 Di chuyển vào thư mục frontend & Cài đặt Node modules
 Yêu cầu máy tính đã cài đặt **Node.js** (Khuyên dùng phiên bản LTS v18 trở lên).
 ```bash
 # Di chuyển vào thư mục frontend
@@ -154,14 +139,14 @@ cd frontend
 npm install --legacy-peer-deps
 ```
 
-#### Bước 4.2: Cấu hình biến môi trường
+## 5.2 Cấu hình biến môi trường
 File cấu hình cục bộ `frontend/.env.local` đã được cấu hình sẵn để kết nối với backend chạy ở localhost:
 ```env
 REACT_APP_API_URL=http://localhost:8002
 ```
 Nếu bạn chạy backend ở cổng khác, hãy chỉnh sửa giá trị này trong file `frontend/.env.local`.
 
-#### Bước 4.3: Khởi chạy Frontend React
+## 5.3 Khởi chạy Frontend React
 ```bash
 npm start
 ```
