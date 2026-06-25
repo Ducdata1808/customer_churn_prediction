@@ -23,8 +23,8 @@ WORKDIR /app/backend
 # Set Python path to include the backend directory
 ENV PYTHONPATH=/app/backend
 
-# Expose the API port
-EXPOSE 8000
+# Expose the API port (Hugging Face Spaces requires port 7860)
+EXPOSE 7860
 
 # Start backend using uvicorn (matching local cd backend & run command)
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "7860"]
