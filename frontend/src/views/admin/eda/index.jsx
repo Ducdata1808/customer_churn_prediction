@@ -17,8 +17,6 @@ const EDADashboard = () => {
   const [tab, setTab] = useState("overview");
   const [ov, setOv] = useState(null);
   const [san, setSan] = useState(null);
-  const [ns, setNs] = useState(null);
-  const [cor, setCor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -26,13 +24,11 @@ const EDADashboard = () => {
     (async () => {
       try {
         setLoading(true);
-        const [o, s, n, c] = await Promise.all([
+        const [o, s] = await Promise.all([
           axios.get(`${API}/api/v1/eda/overview`),
           axios.get(`${API}/api/v1/eda/sanity-check`),
-          axios.get(`${API}/api/v1/eda/numerical-stats`),
-          axios.get(`${API}/api/v1/eda/correlation`),
         ]);
-        setOv(o.data); setSan(s.data); setNs(n.data); setCor(c.data);
+        setOv(o.data); setSan(s.data);
         setLoading(false);
       } catch {
         setError("Không thể kết nối Backend. Hãy kiểm tra server đang chạy tại cổng 8002.");
