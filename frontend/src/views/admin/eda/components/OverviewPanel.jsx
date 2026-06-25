@@ -95,10 +95,10 @@ const OverviewPanel = ({ ov }) => {
         </Card>
       </div>
 
-      {/* ── Biểu đồ notebook 02: Phân bố 16 biến định tính ── */}
+      {/* ── Biểu đồ notebook: Phân bố biến định tính ── */}
       <NotebookChart
-        src="/eda_charts/02_categorical_distribution.png"
-        label="Phân bố biến định tính — Grid Bar Charts (notebook cell 71)"
+        src="/eda_charts/chart_01.png"
+        label="Phân bố biến định tính"
         title="Phân bố tần suất 16 biến định tính trong tập dữ liệu"
         color="blue"
         maxH="560px"

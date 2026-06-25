@@ -10,7 +10,7 @@ class FeatureRoles(BaseModel):
     identifiers: List[str] = Field(..., description="Danh sách cột định danh (như id)")
     numerical: List[str] = Field(..., description="Danh sách các cột chứa giá trị số")
     categorical: List[str] = Field(..., description="Danh sách các cột phân loại")
-    target: List[str] = Field(..., description="Cột mục tiêu cần dự đoán (Churn)")
+    feature_engineering: List[str] = Field(..., description="Danh sách các cột phái sinh")
 
 class DatasetOverviewResponse(BaseModel):
     shape: DatasetShape = Field(..., description="Kích thước tập dữ liệu")
@@ -52,11 +52,6 @@ class NumericalStatsResponse(BaseModel):
     tenure: ColumnStats = Field(..., description="Thống kê mô tả của cột tenure")
     MonthlyCharges: ColumnStats = Field(..., description="Thống kê mô tả của cột MonthlyCharges")
     TotalCharges: ColumnStats = Field(..., description="Thống kê mô tả của cột TotalCharges")
-    total_active_services: ColumnStats = Field(..., description="Thống kê mô tả của cột total_active_services")
-    charge_to_tenure_ratio_log: ColumnStats = Field(..., description="Thống kê mô tả của cột charge_to_tenure_ratio_log")
-    average_cost_per_service: ColumnStats = Field(..., description="Thống kê mô tả của cột average_cost_per_service")
-    security_score: ColumnStats = Field(..., description="Thống kê mô tả của cột security_score")
-    streaming_score: ColumnStats = Field(..., description="Thống kê mô tả của cột streaming_score")
     insight: str = Field(..., description="Đoạn văn nhận xét phân bố định lượng")
 
 # --- 4. Schema cho get_numerical_distribution ---

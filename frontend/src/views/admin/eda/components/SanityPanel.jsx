@@ -1,6 +1,6 @@
 import React from "react";
 import Card from "components/card";
-import { SectionLabel } from "./common";
+import { SectionLabel, NotebookChart } from "./common";
 
 const SanityPanel = ({ san }) => {
   return (
@@ -47,20 +47,18 @@ const SanityPanel = ({ san }) => {
             </ul>
           </div>
           <div className="border-t border-gray-100 pt-4 dark:border-white/10">
-            <div className="mb-2 flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-blue-400" />
-              <span className="text-xs font-semibold uppercase tracking-widest text-blue-500">Kiểm soát điểm ngoại lai</span>
-            </div>
-            <ul className="space-y-2 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
-              <li className="flex items-start gap-2">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500" />
-                <span>Tất cả quan sát của <code className="rounded bg-gray-100 px-1 dark:bg-navy-700">tenure</code>, <code className="rounded bg-gray-100 px-1 dark:bg-navy-700">MonthlyCharges</code>, <code className="rounded bg-gray-100 px-1 dark:bg-navy-700">TotalCharges</code> nằm trong vùng <em>Non-outlier region</em> theo tiêu chí IQR.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500" />
-                <span>Không cần can thiệp dữ liệu như <em>imputation</em>, <em>capping</em> hay xóa dòng lỗi trước khi phân tích và huấn luyện mô hình.</span>
-              </li>
-            </ul>
+            <NotebookChart
+              src="/eda_charts/chart_sanity_boxplot.png"
+              label="Khảo sát phân phối và Kiểm soát điểm ngoại lai"
+              title="Khảo sát Phân phối và Kiểm soát Điểm ngoại lai (Outliers) qua Đồ thị Boxplot"
+              color="blue"
+              maxH="300px"
+              points={[
+                "Tất cả quan sát của tenure, MonthlyCharges, và TotalCharges đều nằm gọn trong khoảng cho phép (Non-outlier region) theo tiêu chí phân vị IQR.",
+                "Không ghi nhận bất kỳ điểm dị thường (outliers) dạng râu dài nào cần phải loại bỏ hoặc xử lý capping.",
+                "Đồ thị chứng tỏ dữ liệu định lượng của khách hàng hoàn toàn sạch, không có lỗi nhập liệu và sẵn sàng cho các khâu phân tích nâng cao (Modeling & Feature Engineering) mà không cần can thiệp kỹ thuật Imputation."
+              ]}
+            />
           </div>
         </div>
       </Card>

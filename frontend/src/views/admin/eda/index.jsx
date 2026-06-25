@@ -9,10 +9,7 @@ import EdaTabs from "./EdaTabs";
 // Import Panels
 import OverviewPanel from "./components/OverviewPanel";
 import SanityPanel from "./components/SanityPanel";
-import StatsPanel from "./components/StatsPanel";
-import UnivariatePanel from "./components/UnivariatePanel";
-import CorrelationPanel from "./components/CorrelationPanel";
-import BivariatePanel from "./components/BivariatePanel";
+import NotebookCharts from "./components/NotebookCharts";
 
 const API = process.env.REACT_APP_API_URL || "http://localhost:8000";
 
@@ -24,17 +21,6 @@ const EDADashboard = () => {
   const [cor, setCor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isDark, setIsDark] = useState(
-    () => document.documentElement.classList.contains("dark")
-  );
-
-  useEffect(() => {
-    const obs = new MutationObserver(() =>
-      setIsDark(document.documentElement.classList.contains("dark"))
-    );
-    obs.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-    return () => obs.disconnect();
-  }, []);
 
   useEffect(() => {
     (async () => {
@@ -98,10 +84,11 @@ const EDADashboard = () => {
       <div>
         {tab === "overview" && <OverviewPanel ov={ov} />}
         {tab === "sanity" && <SanityPanel san={san} />}
-        {tab === "stats" && <StatsPanel ns={ns} />}
-        {tab === "univariate" && <UnivariatePanel ov={ov} isDark={isDark} />}
-        {tab === "correlation" && <CorrelationPanel cor={cor} isDark={isDark} />}
-        {tab === "bivariate" && <BivariatePanel ov={ov} isDark={isDark} />}
+        {["stats", "univariate", "bivariate", "feature_engineering", "correlation"].includes(tab) && (
+          <div className="space-y-5">
+            <NotebookCharts sectionKey={tab} />
+          </div>
+        )}
       </div>
     </div>
   );

@@ -132,10 +132,18 @@ class EDAService:
         duplicates = int(self.df.duplicated().sum())
         
         column_types = {col: str(dtype) for col, dtype in self.df.dtypes.items()}
-        
+        # Các cột Feature Engineering
+        engineered_features = [
+            'loyalty_tier', 'charge_segment', 'total_active_services',
+            'charge_to_tenure_ratio_log', 'average_cost_per_service',
+            'security_score', 'streaming_score', 'manual_payment',
+            'composite_risk_profile', 'demographic_profile'
+        ]
+        feature_engineering_cols = [col for col in engineered_features if col in self.df.columns]
+
         # Phân loại biến giống Mục 2.2 của Notebook
-        numerical_cols = self.df.select_dtypes(include='number').drop(columns=['id'], errors='ignore').columns.tolist()
-        categorical_cols = self.df.select_dtypes(include=['object']).drop(columns=['Churn'], errors='ignore').columns.tolist()
+        numerical_cols = self.df.select_dtypes(include='number').drop(columns=['id', 'Churn'] + engineered_features, errors='ignore').columns.tolist()
+        categorical_cols = self.df.select_dtypes(include=['object', 'category']).drop(columns=['id', 'Churn'] + engineered_features, errors='ignore').columns.tolist()
 
         logger.info(
             "Thành công. Phát hiện %s dòng trùng lặp và %s giá trị thiếu.",
@@ -158,7 +166,7 @@ class EDAService:
                 "identifiers": ["id"] if "id" in self.df.columns else [],
                 "numerical": numerical_cols,
                 "categorical": categorical_cols,
-                "target": ["Churn"] if "Churn" in self.df.columns else []
+                "feature_engineering": feature_engineering_cols
             },
             "insight": insight
         }
@@ -218,9 +226,7 @@ class EDAService:
         """
         logger.info("Đang tính toán các chỉ số thống kê định lượng (get_numerical_statistics)...")
         cols = [
-            'tenure', 'MonthlyCharges', 'TotalCharges',
-            'total_active_services', 'charge_to_tenure_ratio_log',
-            'average_cost_per_service', 'security_score', 'streaming_score'
+            'tenure', 'MonthlyCharges', 'TotalCharges'
         ]
         stats = {}
         for col in cols:
@@ -239,9 +245,10 @@ class EDAService:
         logger.info("Tính toán xong thống kê cho các cột: %s", list(stats.keys()))
         
         insight = (
-            "Phân tích các đặc trưng định lượng gốc và phái sinh cho thấy độ phân tán rộng của cước phí, "
-            "trong khi các điểm số dịch vụ và điểm số khiên bảo mật tập trung làm nổi bật sự đóng góp của hệ sinh thái đối với sự gắn bó. "
-            "Đặc trưng average_cost_per_service cho thấy giá trị trung bình trên mỗi dịch vụ rất ổn định, giúp dễ dàng nhận biết rủi ro ngợp chi phí."
+            "`tenure` chỉ thời gian sử dụng dịch vụ tính theo tháng nên chỉ phân bố trong khoảng nhỏ xác định. "
+            "`MonthlyCharges`, `TotalCharges` là cước phí theo tháng và tổng cước phí của khách hàng nên phân bố rất rộng, "
+            "nhưng nhìn chung dữ liệu định lượng gốc ít bị lệch. "
+            "Điều này có thể được quan sát thông qua đồ thị Histogram của dữ liệu theo từng đặc trưng."
         )
 
         return {
@@ -462,45 +469,45 @@ class EDAService:
                 return 0
             churn_count = len(sub[sub['Churn'] == 'Yes'])
             return int(round((churn_count / len(sub)) * 100))
+        features = [
+            {
+                "feature": "Loại hợp đồng (Contract)",
+                "direction": "Month-to-month → rời mạng nhiều nhất",
+                "risk": get_churn_rate(df['Contract'] == 'Month-to-month')
+            },
+            {
+                "feature": "Thời gian sử dụng (Tenure)",
+                "direction": "Rời đi nhiều sau 6 tháng đầu",
+                "risk": get_churn_rate(df['tenure'] <= 12)
+            },
+            {
+                "feature": "Dịch vụ Internet (Internet Service)",
+                "direction": "Fiber Optic → churn cao hơn",
+                "risk": get_churn_rate(df['InternetService'] == 'Fiber optic')
+            },
+            {
+                "feature": "Cước phí hàng tháng (Monthly Charges)",
+                "direction": "Cước cao (> $70) → tỷ lệ churn tăng",
+                "risk": get_churn_rate(df['MonthlyCharges'] > 70)
+            },
+            {
+                "feature": "Hỗ trợ kỹ thuật (Tech Support)",
+                "direction": "Không có hỗ trợ kỹ thuật (No)",
+                "risk": get_churn_rate(df['TechSupport'] == 'No')
+            }
+        ]
         
-        c_risk = get_churn_rate(df['Contract'] == 'Month-to-month')
-        t_risk = get_churn_rate(df['tenure'] <= 12)
-        i_risk = get_churn_rate(df['InternetService'] == 'Fiber optic')
-        m_risk = get_churn_rate(df['MonthlyCharges'] > 70)
-        s_risk = get_churn_rate(df['TechSupport'] == 'No')
+        # Sắp xếp theo risk giảm dần
+        features.sort(key=lambda x: x["risk"], reverse=True)
         
-        return {
-            "risk_features": [
-                {
-                    "feature": "Loại hợp đồng (Contract)",
-                    "impact": "Cao",
-                    "direction": "Month-to-month → rời mạng nhiều nhất",
-                    "risk": c_risk
-                },
-                {
-                    "feature": "Thời gian sử dụng (Tenure)",
-                    "impact": "Cao",
-                    "direction": "Tenure thấp (<= 12 tháng) → rủi ro cao",
-                    "risk": t_risk
-                },
-                {
-                    "feature": "Dịch vụ Internet (Internet Service)",
-                    "impact": "Trung bình",
-                    "direction": "Fiber Optic → churn cao hơn",
-                    "risk": i_risk
-                },
-                {
-                    "feature": "Cước phí hàng tháng (Monthly Charges)",
-                    "impact": "Trung bình",
-                    "direction": "Cước cao (> $70) → tỷ lệ churn tăng",
-                    "risk": m_risk
-                },
-                {
-                    "feature": "Hỗ trợ kỹ thuật (Tech Support)",
-                    "impact": "Thấp",
-                    "direction": "Không có hỗ trợ kỹ thuật (No)",
-                    "risk": s_risk
-                }
-            ]
-        }
+        # Gán lại mức độ ảnh hưởng
+        for idx, f in enumerate(features):
+            if idx < 2:
+                f["impact"] = "Cao"
+            elif idx < 4:
+                f["impact"] = "Trung bình"
+            else:
+                f["impact"] = "Thấp"
+                
+        return {"risk_features": features}
 

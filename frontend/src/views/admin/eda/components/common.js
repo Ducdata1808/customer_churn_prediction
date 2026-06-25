@@ -64,7 +64,7 @@ export const NotebookChart = ({ src, title, label, color = "teal", points = [], 
           </p>
         )}
         {title && (
-          <p className="mb-2 px-1 text-sm font-bold text-navy-700 dark:text-white">{title}</p>
+          <p className="mb-2 px-1 text-sm font-bold text-white">{title}</p>
         )}
         <img
           src={src}
