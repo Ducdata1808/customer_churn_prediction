@@ -61,24 +61,3 @@ frontend/
 ### 3. Huấn luyện & So sánh mô hình (`/admin/comparison`)
 *   Cho phép người dùng lựa chọn thuật toán (Logistic Regression, Random Forest, XGBoost, LightGBM) và tinh chỉnh các tham số (max_depth, n_estimators, learning_rate...).
 *   Huấn luyện mô hình trực tiếp qua API và hiển thị kết quả đánh giá (Accuracy, Precision, Recall, F1, AUC), vẽ Ma trận nhầm lẫn (Confusion Matrix) và lưu trữ lịch sử so sánh hiệu suất giữa các mô hình đã chạy.
-
----
-
-## 🏃 Hướng dẫn Khởi chạy cục bộ
-
-1.  **Cài đặt Node.js:** Đảm bảo máy tính đã cài đặt Node.js LTS (v18 trở lên).
-2.  **Cài đặt dependencies:** Di chuyển vào thư mục `frontend` và cài đặt các thư viện:
-    ```bash
-    cd frontend
-    npm install --legacy-peer-deps
-    ```
-    *(Sử dụng `--legacy-peer-deps` để giải quyết xung đột thư viện đi kèm của template)*
-3.  **Cấu hình API Endpoint:** Tạo hoặc chỉnh sửa file `frontend/.env.local` để chỉ định đúng địa chỉ Backend chạy cổng `8000` hoặc `8002`:
-    ```env
-    REACT_APP_API_URL=http://localhost:8000
-    ```
-4.  **Khởi động server:**
-    ```bash
-    npm start
-    ```
-    *   Trang Dashboard sẽ tự động mở tại địa chỉ: `http://localhost:3000`
