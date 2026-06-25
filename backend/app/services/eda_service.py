@@ -13,13 +13,37 @@ class EDAService:
         Khởi tạo service và load dữ liệu từ file CSV.
         Đồng thời thực hiện một số bước tiền xử lý cơ bản và Feature Engineering như trong notebook.
         """
-        logger.info("Khởi tạo EDAService. Đang tải dữ liệu từ: %s...", data_path)
         try:
-            self.df = pd.read_csv(data_path)
-            if len(self.df) > 30000:
-                logger.info("Tap du lieu qua lon (%s dong). Tien hanh lay mau ngau nhien 30,000 dong de tiet kiem RAM.", len(self.df))
-                self.df = self.df.sample(n=30000, random_state=42).reset_index(drop=True)
-            logger.info("Tải dữ liệu thành công. Kích thước tập dữ liệu: %s", self.df.shape)
+            # Đọc tiêu đề trước để lọc dictionary dtypes (tránh lỗi nếu thiếu cột)
+            cols = pd.read_csv(data_path, nrows=0).columns
+            dtypes = {
+                'id': 'int32',
+                'gender': 'category',
+                'SeniorCitizen': 'int8',
+                'Partner': 'category',
+                'Dependents': 'category',
+                'tenure': 'int8',
+                'PhoneService': 'category',
+                'MultipleLines': 'category',
+                'InternetService': 'category',
+                'OnlineSecurity': 'category',
+                'OnlineBackup': 'category',
+                'DeviceProtection': 'category',
+                'TechSupport': 'category',
+                'StreamingTV': 'category',
+                'StreamingMovies': 'category',
+                'Contract': 'category',
+                'PaperlessBilling': 'category',
+                'PaymentMethod': 'category',
+                'MonthlyCharges': 'float32',
+                'Churn': 'category',
+                'TotalCharges': 'category'
+            }
+            filtered_dtypes = {k: v for k, v in dtypes.items() if k in cols}
+            
+            # Nạp toàn bộ dữ liệu với định dạng tối ưu RAM
+            self.df = pd.read_csv(data_path, dtype=filtered_dtypes)
+            logger.info("Tải dữ liệu thành công. Kích thước tập dữ liệu gốc: %s", self.df.shape)
         except Exception as e:
             logger.error("Lỗi khi tải file dữ liệu từ %s: %s", data_path, str(e))
             raise e
@@ -27,7 +51,7 @@ class EDAService:
         # Tiền xử lý giống notebook: chuyển đổi SeniorCitizen từ 1/0 thành Yes/No
         if 'SeniorCitizen' in self.df.columns:
             logger.info("Cột 'SeniorCitizen' tồn tại. Tiến hành chuẩn hóa dữ liệu sang 'Yes'/'No'.")
-            self.df['SeniorCitizen'] = self.df['SeniorCitizen'].replace({1: 'Yes', 0: 'No'})
+            self.df['SeniorCitizen'] = self.df['SeniorCitizen'].replace({1: 'Yes', 0: 'No'}).astype('category')
 
         # Loại bỏ khách hàng ma không dùng cả Phone và Internet (Mục 3.4 trong Notebook)
         if 'PhoneService' in self.df.columns and 'InternetService' in self.df.columns:
@@ -38,7 +62,7 @@ class EDAService:
 
         # Chuẩn hóa cột TotalCharges sang numeric để tránh lỗi chuỗi trống
         if 'TotalCharges' in self.df.columns:
-            self.df['TotalCharges'] = pd.to_numeric(self.df['TotalCharges'], errors='coerce').fillna(0.0)
+            self.df['TotalCharges'] = pd.to_numeric(self.df['TotalCharges'], errors='coerce').fillna(0.0).astype('float32')
 
         # --- FEATURE ENGINEERING (Xây dựng đặc trưng phái sinh từ Notebook) ---
         logger.info("Bắt đầu xây dựng các đặc trưng phái sinh mới từ EDA...")
@@ -50,7 +74,7 @@ class EDAService:
                 bins=[0, 6, 12, 24, 48, float('inf')],
                 labels=['Onboarding (0-6 tháng)', 'First Year (7-12 tháng)', 'Second Year (13-24 tháng)', 'Familiar (25-48 tháng)', 'Loyal (trên 48 tháng)'],
                 include_lowest=True
-            ).astype(str)
+            ).astype('category')
 
         # 2. Rời rạc hóa MonthlyCharges -> charge_segment
         if 'MonthlyCharges' in self.df.columns:
@@ -59,7 +83,7 @@ class EDAService:
                 bins=[0, 35, 70, float('inf')],
                 labels=['Budget (0-35$)', 'Standard (35-70$)', 'Premium (trên 70$)'],
                 include_lowest=True
-            ).astype(str)
+            ).astype('category')
 
         # 3. Tính total_active_services (Số lượng dịch vụ hoạt động)
         service_cols = ['OnlineSecurity', 'OnlineBackup', 'DeviceProtection', 'TechSupport', 'StreamingTV', 'StreamingMovies', 'MultipleLines']
