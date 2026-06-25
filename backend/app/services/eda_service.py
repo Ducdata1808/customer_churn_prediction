@@ -2,9 +2,28 @@ import logging
 import pandas as pd
 import numpy as np
 from typing import Dict, List, Any
+from functools import wraps
 
 # Khởi tạo logger cho service
 logger = logging.getLogger(__name__)
+
+def eda_cache(method):
+    @wraps(method)
+    def wrapper(self, *args, **kwargs):
+        if not hasattr(self, "_cache"):
+            self._cache = {}
+        # Create a cache key from method name and arguments
+        arg_str = "_".join(str(a) for a in args)
+        kwarg_str = "_".join(f"{k}:{v}" for k, v in sorted(kwargs.items()))
+        cache_key = f"{method.__name__}_{arg_str}_{kwarg_str}"
+        
+        if cache_key in self._cache:
+            return self._cache[cache_key]
+            
+        result = method(self, *args, **kwargs)
+        self._cache[cache_key] = result
+        return result
+    return wrapper
 
 class EDAService:
     # Bước 0: load file dữ liệu
@@ -145,6 +164,7 @@ class EDAService:
 
     # Bước 1, 2: thống kê mô tả dữ liệu
     # [Mục 1 & 2 trong Notebook]
+    @eda_cache
     def get_dataset_overview(self) -> Dict[str, Any]:
         """
         Trả về thông tin tổng quan của tập dữ liệu:
@@ -198,6 +218,7 @@ class EDAService:
             "insight": insight
         }
 
+    @eda_cache
     def get_data_sanity_check(self) -> Dict[str, Any]:
         """
         [Mục 3.1 & 3.3 trong Notebook]
@@ -245,6 +266,7 @@ class EDAService:
             "insight": insight
         }
 
+    @eda_cache
     def get_numerical_statistics(self) -> Dict[str, Any]:
         """
         [Mục 4.1 trong Notebook]
@@ -283,6 +305,7 @@ class EDAService:
             "insight": insight
         }
 
+    @eda_cache
     def get_numerical_distribution(self, column_name: str, bins: int = 15) -> Dict[str, Any]:
         """
         [Mục 4.1 trong Notebook]
@@ -322,6 +345,7 @@ class EDAService:
             "insight": insight
         }
 
+    @eda_cache
     def get_categorical_distribution(self, column_name: str) -> Dict[str, Any]:
         """
         [Mục 4.2 & 4.3 trong Notebook]
@@ -351,6 +375,7 @@ class EDAService:
             "insight": insight
         }
 
+    @eda_cache
     def get_bivariate_analysis(self, feature_name: str) -> Dict[str, Any]:
         """
         [Phân tích đa biến: Liên kết giữa Feature bất kỳ và Target Churn]
@@ -408,6 +433,7 @@ class EDAService:
                 "insight": insight
             }
 
+    @eda_cache
     def get_correlation_matrix(self) -> Dict[str, Any]:
         """
         [Mục phân tích tương quan]
@@ -439,6 +465,7 @@ class EDAService:
             "insight": insight
         }
 
+    @eda_cache
     def get_tenure_binned(self) -> Dict[str, Any]:
         """
         Phân chia tenure thành các khoảng [0-12, 13-24, 25-36, 37-48, 49-60, 61-72]
@@ -478,6 +505,7 @@ class EDAService:
             "retain_percentages": retain_percentages
         }
 
+    @eda_cache
     def get_risk_features(self) -> Dict[str, Any]:
         """
         Tính toán tỷ lệ rời mạng thực tế (risk percentage) của các nhóm đặc trưng rủi ro chính:
