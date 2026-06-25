@@ -15,9 +15,6 @@ dist/
 *.mp4
 *.m3u8
 *.webp
-*.png
-*.jpg
-*.jpeg
 !frontend/public/videos/**
 .env.local
 .env.development.local
