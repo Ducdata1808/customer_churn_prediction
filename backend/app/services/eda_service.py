@@ -16,6 +16,9 @@ class EDAService:
         logger.info("Khởi tạo EDAService. Đang tải dữ liệu từ: %s...", data_path)
         try:
             self.df = pd.read_csv(data_path)
+            if len(self.df) > 30000:
+                logger.info("Tap du lieu qua lon (%s dong). Tien hanh lay mau ngau nhien 30,000 dong de tiet kiem RAM.", len(self.df))
+                self.df = self.df.sample(n=30000, random_state=42).reset_index(drop=True)
             logger.info("Tải dữ liệu thành công. Kích thước tập dữ liệu: %s", self.df.shape)
         except Exception as e:
             logger.error("Lỗi khi tải file dữ liệu từ %s: %s", data_path, str(e))

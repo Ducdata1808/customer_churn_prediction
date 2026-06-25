@@ -4,14 +4,6 @@ import numpy as np
 import joblib
 import logging
 from pathlib import Path
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier
-from xgboost import XGBClassifier
-from lightgbm import LGBMClassifier
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix
-from imblearn.over_sampling import SMOTE
 import sys
 
 from app.schemas.train_schema import TrainRequest
@@ -28,6 +20,9 @@ PREPROCESSOR_PATH = BASE_DIR / "backend" / "app" / "ml_artifacts" / "preprocesso
 TARGET_COL = "Churn"
 
 def load_and_sample_data(sample_size: int, test_size: float):
+    from sklearn.model_selection import train_test_split
+    from imblearn.over_sampling import SMOTE
+
     logger.info(f"Loading data from {TRAIN_DATA_PATH}")
     df = pd.read_csv(TRAIN_DATA_PATH)
     logger.info(f"Loaded DataFrame columns: {df.columns.tolist()}")
@@ -63,6 +58,12 @@ def load_and_sample_data(sample_size: int, test_size: float):
     return X_train_resampled, X_val, y_train_resampled, y_val
 
 def get_model(model_type: str, hyperparameters: dict):
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.tree import DecisionTreeClassifier
+    from sklearn.ensemble import RandomForestClassifier
+    from xgboost import XGBClassifier
+    from lightgbm import LGBMClassifier
+
     if model_type == "logistic_regression":
         params = {"random_state": 42, "max_iter": 1000}
         params.update(hyperparameters)
@@ -87,6 +88,7 @@ def get_model(model_type: str, hyperparameters: dict):
         raise ValueError(f"Model type '{model_type}' is not supported.")
 
 def train_and_evaluate(request: TrainRequest) -> dict:
+    from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix
     start_time = time.time()
     
     logger.info(f"Starting train_and_evaluate for model {request.model_type}")
