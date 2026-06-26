@@ -37,7 +37,7 @@ const OverviewPanel = ({ ov }) => {
           {[
             { l: "Numerical", d: ov?.feature_roles?.numerical, color: "text-red-500", bg: "bg-red-50 dark:bg-red-950/20" },
             { l: "Categorical", d: ov?.feature_roles?.categorical, color: "text-green-500", bg: "bg-green-50 dark:bg-green-950/20" },
-            { l: "Target", d: ov?.feature_roles?.target, color: "text-orange-400", bg: "bg-orange-50 dark:bg-orange-950/20" },
+            { l: "Feature Eng.", d: ov?.feature_roles?.feature_engineering, color: "text-purple-500", bg: "bg-purple-50 dark:bg-purple-950/20" },
           ].map((g) => (
             <div key={g.l} className={`rounded-xl p-4 ${g.bg}`}>
               <p className={`mb-2 text-[10px] uppercase tracking-widest font-bold ${g.color}`}>
