@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 // ─── Dữ liệu 16 biểu đồ trích xuất từ trocungDucLevan.ipynb ──────────────────
 const CHARTS = [
@@ -308,6 +308,11 @@ const ChartCard = ({ chart, onOpen }) => (
 const NotebookCharts = ({ sectionKey }) => {
   const [modalChart, setModalChart] = useState(null);
   const [activeSection, setActiveSection] = useState(sectionKey || "all");
+
+  // Đồng bộ activeSection khi sectionKey thay đổi từ parent (tab navigation)
+  useEffect(() => {
+    if (sectionKey) setActiveSection(sectionKey);
+  }, [sectionKey]);
 
   const filteredCharts =
     activeSection === "all"

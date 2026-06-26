@@ -52,7 +52,7 @@ const SanityPanel = ({ san }) => {
               label="Khảo sát phân phối và Kiểm soát điểm ngoại lai"
               title="Khảo sát Phân phối và Kiểm soát Điểm ngoại lai (Outliers) qua Đồ thị Boxplot"
               color="blue"
-              maxH="300px"
+              maxH="400px"
               points={[
                 "Tất cả quan sát của tenure, MonthlyCharges, và TotalCharges đều nằm gọn trong khoảng cho phép (Non-outlier region) theo tiêu chí phân vị IQR.",
                 "Không ghi nhận bất kỳ điểm dị thường (outliers) dạng râu dài nào cần phải loại bỏ hoặc xử lý capping.",
