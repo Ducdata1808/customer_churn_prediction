@@ -8,7 +8,7 @@ Mini Project của nhóm 14, phục vụ cho học phần nhập môn khoa học
 Kết quả đạt được:
 - File EDA notebook: https://github.com/Ducdata1808/customer_churn_prediction/blob/main/EDA/notebook.ipynb
 - File báo cáo kết quả: https://github.com/Ducdata1808/customer_churn_prediction/blob/main/report.pdf
-- Web interface: https://customer-churn-prediction-1c4339jj6.vercel.app/
+- Web interface: https://customer-churn-prediction-ten-hazel.vercel.app/
 
 # 2. Cấu trúc dự án
 ```
