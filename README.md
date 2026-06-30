@@ -172,18 +172,3 @@ npm start
 *   Giờ đây, bạn có thể thực hiện EDA, Huấn luyện mô hình từ giao diện, so sánh các tham số và chạy dự báo Churn trực quan hoàn toàn cục bộ!
 
 Chi tiết về Fronted: https://github.com/Ducdata1808/customer_churn_prediction/tree/main/frontend
-
-## 5.4 Một số hình ảnh giao diện ứng dụng
-
-### Dashboard chính
-![Dashboard chính](images/main_dashboard.png)
-
-### Phân tích khám phá dữ liệu (EDA)
-![Phân tích khám phá dữ liệu](images/eda.png)
-
-### So sánh các mô hình huấn luyện
-![So sánh các mô hình](images/model_comparison.png)
-
-### Dự đoán tỷ lệ khách hàng rời bỏ (Churn Prediction)
-![Dự đoán Churn](images/churn_prediction.png)
-
