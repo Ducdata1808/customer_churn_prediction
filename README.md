@@ -44,7 +44,7 @@ Chi tiết hơn về kiến trúc MLflow: https://github.com/Ducdata1808/custome
 
 ```bash
 # Clone repository
-git clone <repository-url>
+git clone git@github.com:Ducdata1808/customer_churn_prediction.git
 cd customer_churn_prediction
 
 # Tạo virtual environment
